@@ -103,7 +103,7 @@ function refreshs()
 refreshs();
 timer = setInterval(function(){
 		refreshs();
-	},1000);
+	},10000);
 </script>
 <footer class="footer ">
       <p>&copy; Jeffery</p>

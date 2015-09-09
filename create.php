@@ -42,34 +42,30 @@ function deldir($dir){
 function pstatus($pid){
     $command = 'ps -p '.$pid;
     exec($command,$op);
-    if (!isset($op[1]))return false;
+    if (!isset($op[1])) return false;
     else return true;
 }
 function dcopy($source, $destination){   
-　　if(!is_dir($source)){   
-　　　　echo("Error:the".$source."is not a directory!");   
-　　　　return 0;   
-　　}   
-
-
-　　if(!is_dir($destination)){   
-　　　　mkdir($destination,0777);  
-　　} else return 0;
- 
-　　$handle=dir($source);   
-　　while($entry=$handle->read()) {   
-　　　　if(($entry!=".")&&($entry!="..")){   
-　　　　　　if(is_dir($source."/".$entry)){      
-　　　　　　　　dcopy($source."/".$entry,$destination."/".$entry);   
-　　　　　　}   
-　　　　　　else{   
-　　　　　　　　copy($source."/".$entry,$destination."/".$entry);   
-　　　　　　}   
-　　　　}   
-　　}   
- 
-　　return 1;   
-}  
+	if (!is_dir($source)){
+		echo "ERROR: THE".$source." is not a directory!";
+		return 0;
+	}
+	if (!is_dir($destination)){
+		mkdir($destination);
+	} else return 0;
+	$handle= dir($source);
+ 	while($entry=$handle->read()){
+		if(($entry!='.')&&($entry!='..')){
+			if(is_dir($source."/".$entry)){
+				dcopy($source."/".$entry,$destination."/".$entry); 
+			}
+			else{
+				copy($source."/".$entry,$destination."/".$entry); 
+			}
+		}
+	}
+	return 1;
+}
 function delete_old_process($link){
     $ret=sqlquery('SELECT * FROM `process` where 1',$link);
     while ($i = $ret->fetch(PDO::FETCH_ASSOC)){
@@ -102,14 +98,16 @@ switch ($_POST['type']) {
         break;
     case 'qqrobot':
         if (dcopy('qqbot/qqrobot', 'qqbot/'.$newid)==0) {$link->rollBack(); die('{"retcode":999,"msg":"UNABLE TO CREATE FOLDER!"}');}
-        $myfile = fopen('qqbot/'.$newid."/groupfollow.txt", "w") or {$link->rollBack(); deldir('qqbot/'.$newid); die('{"retcode":996,"msg":"UNABLE TO CREATE GROUPFOLLOW.TXT!"}');}
+        $myfile = fopen('qqbot/'.$newid."/groupfollow.txt", "w");
+		if(!$myfile) {$link->rollBack(); deldir('qqbot/'.$newid); die('{"retcode":996,"msg":"UNABLE TO CREATE GROUPFOLLOW.TXT!"}');}
         fwrite($myfile, $_POST['groups']);
         fclose($myfile);
         $type='qqrobot';
         break;
     case 'qqparking':
         if (dcopy('qqbot/qqrobot', 'qqbot/'.$newid)==0) {$link->rollBack(); die('{"retcode":999,"msg":"UNABLE TO CREATE FOLDER!"}');}
-        $myfile = fopen('qqbot/'.$newid."/config.txt", "w") or {$link->rollBack(); deldir('qqbot/'.$newid); die('{"retcode":996,"msg":"UNABLE TO CREATE GROUPFOLLOW.TXT!"}');}
+        $myfile = fopen('qqbot/'.$newid."/config.txt", "w");
+		if(!$myfile)  {$link->rollBack(); deldir('qqbot/'.$newid); die('{"retcode":996,"msg":"UNABLE TO CREATE GROUPFOLLOW.TXT!"}');}
         fwrite($myfile, $_POST['email']."\n");
         fwrite($myfile, $_POST['welcome']."\n");
         fclose($myfile);
@@ -120,8 +118,10 @@ switch ($_POST['type']) {
         die('{"retcode":996,"msg":"UNKNOWN TYPE SUBMITTED!"}');
         break;
 }
-
-$command = 'nohup python2 qqbot/'.$newid.'/qqbot.py > /dev/null 2>&1 & echo $!';
+shell_exec('chmod -R +x qqbot/'.$newid);
+shell_exec('chmod -R +w qqbot/'.$newid);
+shell_exec('cd qqbot/'.$newid);
+$command = 'nohup python2 qqbot.py > /dev/null 2>&1 & echo $!';
 exec($command ,$op);
 $pid = (int)$op[0];
 sqlexec('INSERT INTO `process` VALUES (?,?,?)',array($newid,$pid,$type),$link);
