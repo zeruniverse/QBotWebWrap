@@ -682,7 +682,7 @@ class pmchat_thread(threading.Thread):
 
     
     # con = threading.Condition()
-    autoreply = '最近需要认真学习，不上QQ,有事请邮件联系。接下来由小黄鸡代我与您聊天！在聊天时输入【record】可以开始给我留言，(英文单词: record），输入此命令并在收到提示后输入留言内容即可.record前面不能有空格（r需为该消息的第一个字符），举例:\nrecord\n\n(系统提示消息)\n\n（留言内容）\n\n(系统提示：留言已记录)'
+    autoreply = welcomeMessage+'接下来由小黄鸡代我与您聊天！在聊天时输入【record】可以开始给我留言，(英文单词: record），输入此命令并在收到提示后输入留言内容即可.record前面不能有空格（r需为该消息的第一个字符），举例:\nrecord\n\n(系统提示消息)\n\n（留言内容）\n\n(系统提示：留言已记录)'
     # newIp = ''
 
     def __init__(self, tuin, isSess, group_sig, service_type,ini_txt,ini_msgid,myid):
