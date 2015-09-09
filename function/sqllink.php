@@ -3,9 +3,9 @@ date_default_timezone_set("America/Vancouver");
 function sqllink()
 {
     $dbhost="localhost";
-    $dbname="usedbook";
-    $dbusr="usedbook";
-    $dbpwd="TqWbD5pNQHvdRJYJ";
+    $dbname="a";
+    $dbusr="a";
+    $dbpwd="a";
     $dbhdl=NULL;
     $opt = array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',); 
     $dsn='mysql:host=' . $dbhost . ';dbname=' . $dbname.';charset=utf8';
