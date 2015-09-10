@@ -1,5 +1,4 @@
-QQ机器人WEB控制台  
-(QQBOT WEB WRAP)
+QQ机器人WEB控制台
 =========  
 [![Build Status](https://travis-ci.org/zeruniverse/QBotWebWrap.svg)](https://travis-ci.org/zeruniverse/QBotWebWrap) ![Environment](https://img.shields.io/badge/PHP-5.2+-blue.svg)
 ![License](https://img.shields.io/github/license/zeruniverse/QBotWebWrap.svg)      
@@ -7,6 +6,7 @@ QQ机器人WEB控制台
 有关[QQRobot](https://github.com/zeruniverse/QQRobot), [QQParking](https://github.com/zeruniverse/QQParking), [QzoneLiker](https://github.com/zeruniverse/QzoneLiker) 请见原项目。
 用户输入基本参数后点击运行，然后等待网页中出现二维码用手机QQ（或安全中心）扫描登陆即可。  
   
+#QQBOT WEB WRAP
 This project is a Web-based console for [QQRobot](https://github.com/zeruniverse/QQRobot), [QQParking](https://github.com/zeruniverse/QQParking) and [QzoneLiker](https://github.com/zeruniverse/QzoneLiker).  
 Users no longer need to type command in Terminal. They can now do it with a web browser!  
   
