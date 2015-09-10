@@ -4,7 +4,7 @@ if(!isset($_GET['id'])) die('CAN NOT FIND ID IN THE PARAMETER');
 $link=sqllink();
 if(!$link) die('DATABASE ERROR');
 $res=sqlexec('SELECT * FROM `process` where `id`=?',array($_GET['id']),$link);
-$result=$res->fetch(PDO::FETCH_ASSOC)
+$result=$res->fetch(PDO::FETCH_ASSOC);
 if ($result==FALSE)  die('THIS PROCESS ALREADY TERMINATED AND REMOVED FROM THE SERVER!');
 ?>
 <!DOCTYPE html>
