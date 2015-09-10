@@ -801,7 +801,7 @@ class pmchat_thread(threading.Thread):
 # -----------------
 
 if __name__ == "__main__":
-    vpath = './v.jpg'
+    vpath = './v.png'
     qq = 0
     if len(sys.argv) > 1:
         vpath = sys.argv[1]

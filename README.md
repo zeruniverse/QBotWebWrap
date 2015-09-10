@@ -12,8 +12,8 @@ Users no longer need to type command in Terminal. They can now do it with a web 
   
 ##如何使用（服务器端配置）  
 + 确保安装有PHP 5.2+，MySQL与python2.7  
-+ 新建一个文件夹并将此作为网站根目录，将[QBotWebWrap](https://github.com/zeruniverse/QBotWebWrap/releases/download/1.0/QBotWebWrap.zip)解压至文件夹内。   
-+ 新建一个数据库，导入[qwrap.sql](https://github.com/zeruniverse/QBotWebWrap/releases/download/1.0/qwrap.sql)。    
++ 新建一个文件夹并将此作为网站根目录，将[QBotWebWrap](https://github.com/zeruniverse/QBotWebWrap/releases/download/1.3/QBotWebWrap.zip)解压至文件夹内。   
++ 新建一个数据库，导入[qwrap.sql](https://github.com/zeruniverse/QBotWebWrap/releases/download/1.3/qwrap.sql)。    
 + 假设您刚刚建立的文件夹是qwrapweb. ```cd qwrapweb```   
 + 将里面的qqbot文件夹权限改为777 ```sudo chmod -R 777 qqbot```    
 + 将function/sqllink.php改为您自己的数据库用户名，数据库和密码。 ```vim function/sqllink.php```  
