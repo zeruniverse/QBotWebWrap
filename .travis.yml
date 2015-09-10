@@ -1,0 +1,15 @@
+sudo: false
+language: php
+php:
+  - hhvm
+  - 5.2
+  - 5.3
+  - 5.4
+  - 5.5
+  - 5.6
+before_script:
+  - mv function a
+script: 
+  - sh travis-ci.sh ./
+after_script:
+  - cat myerrorfile
