@@ -69,7 +69,7 @@ if ($result==FALSE)  die('THIS PROCESS ALREADY TERMINATED AND REMOVED FROM THE S
 </nav>
 <div class="container theme-showcase">
       <div class="page-header">
-        <h1>Instructions</h1>
+        <h1>INSTRUCTIONS</h1>
 	  </div>
       <div>
 <p>1. Stay on this page until the QR Code is ready.</p>
