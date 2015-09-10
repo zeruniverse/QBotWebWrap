@@ -6,6 +6,8 @@ QQ机器人WEB控制台
 有关[QQRobot](https://github.com/zeruniverse/QQRobot), [QQParking](https://github.com/zeruniverse/QQParking), [QzoneLiker](https://github.com/zeruniverse/QzoneLiker) 请见原项目。
 用户输入基本参数后点击运行，然后等待网页中出现二维码用手机QQ（或安全中心）扫描登陆即可。  
   
+DEMO: [qqbot.jeffery.cc](http://qqbot.jeffery.cc) (仅供测试，每10分钟自动杀死所有进程，限制10并发)  
+  
 #QQBOT WEB WRAP
 This project is a Web-based console for [QQRobot](https://github.com/zeruniverse/QQRobot), [QQParking](https://github.com/zeruniverse/QQParking) and [QzoneLiker](https://github.com/zeruniverse/QzoneLiker).  
 Users no longer need to type command in Terminal. They can now do it with a web browser!  
