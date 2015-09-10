@@ -67,7 +67,8 @@ class Login(HttpClient):
             T = T + 1
             self.Download('http://ptlogin2.qq.com/ptqrshow?appid=549000912&e=2&l=M&s=3&d=72&v=4&daid=5', self.VPath)
             LoginSig = self.getCookie('pt_login_sig')
-            logging.info('[{0}] Get QRCode Picture Success.'.format(T))           
+            logging.info('[{0}] Get QRCode Picture Success.'.format(T))  
+            logging.info('请用手机QQ/安全中心扫描二维码登陆')
             while True:
                 html = self.Get('http://ptlogin2.qq.com/ptqrlogin?u1=http%3A%2F%2Fqzs.qq.com%2Fqzone%2Fv5%2Floginsucc.html%3Fpara%3Dizone&ptredirect=0&h=1&t=1&g=1&from_ui=1&ptlang=2052&action=0-0-{0}&js_ver=10131&js_type=1&login_sig={1}&pt_uistyle=32&aid=549000912&daid=5&pt_qzone_sig=1'.format(date_to_millis(datetime.datetime.utcnow()) - StarTime, LoginSig), QzoneLoginUrl)
                 # logging.info(html)
@@ -89,12 +90,12 @@ class Login(HttpClient):
 
         # 记录登陆账号的昵称
         tmpUserName = ret[11]
-
+        
         self.Get(ret[5])
         UIN = getReValue(ret[5], r'uin=([0-9]+?)&', 'Fail to get QQ number', 1)
         Referer = Referer+str(UIN)
         skey = self.getCookie('skey')
-
+        logging.info('登陆成功，用户名：'+tmpUserName)
 # -----------------
 # 计算g_tk
 # -----------------  

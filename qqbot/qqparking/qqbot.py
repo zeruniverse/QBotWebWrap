@@ -512,6 +512,7 @@ class Login(HttpClient):
             self.Download('https://ssl.ptlogin2.qq.com/ptqrshow?appid={0}&e=0&l=L&s=8&d=72&v=4'.format(APPID), self.VPath)
             
             logging.info('[{0}] Get QRCode Picture Success.'.format(T))
+            logging.info('请用手机QQ/安全中心扫描二维码登陆')
             
 
             while True:
