@@ -69,6 +69,21 @@ if ($result==FALSE)  die('THIS PROCESS ALREADY TERMINATED AND REMOVED FROM THE S
 </nav>
 <div class="container theme-showcase">
       <div class="page-header">
+        <h1>Instructions</h1>
+	  </div>
+      <div>
+<p>1. Stay on this page until the QR Code is ready.</p>
+<p>2. When QR Code is ready, you will see it in the QR Code part.</p>
+<p>3. Scan QR Code with your mobile QQ or QQ security center.</p>
+<p>4. Confirm that you successfully Login in Log.</p>
+<p>5. Close this page and have a coffee!</p>
+<p><br /></p>
+<p>Please keep the address of this page (http://../status.php?id=xxx). You can go back to check the log or download the log file.</p>
+<p>The QR Code and Log refreshes every 5 seconds.</p>
+<p>The last few lines of log will be on the screen. If you want all log, please download the log (at the bottom of this page). </p>
+</div>
+
+      <div class="page-header">
         <h1>QR CODE</h1>
 	  </div>
       <div style="text-align: center"><img id="qrcode" /></div>
@@ -103,7 +118,7 @@ function refreshs()
 refreshs();
 timer = setInterval(function(){
 		refreshs();
-	},10000);
+	},5000);
 </script>
 <footer class="footer ">
       <p>&copy; Jeffery</p>

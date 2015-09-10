@@ -105,7 +105,7 @@ switch ($_POST['type']) {
         $type='qqrobot';
         break;
     case 'qqparking':
-        if (dcopy('qqbot/qqrobot', 'qqbot/'.$newid)==0) {$link->rollBack(); die('{"retcode":999,"msg":"UNABLE TO CREATE FOLDER!"}');}
+        if (dcopy('qqbot/qqparking', 'qqbot/'.$newid)==0) {$link->rollBack(); die('{"retcode":999,"msg":"UNABLE TO CREATE FOLDER!"}');}
         $myfile = fopen('qqbot/'.$newid."/config.txt", "w");
 		if(!$myfile)  {$link->rollBack(); deldir('qqbot/'.$newid); die('{"retcode":996,"msg":"UNABLE TO CREATE GROUPFOLLOW.TXT!"}');}
         fwrite($myfile, $_POST['email']."\n");
@@ -120,8 +120,7 @@ switch ($_POST['type']) {
 }
 shell_exec('chmod -R +x qqbot/'.$newid);
 shell_exec('chmod -R +w qqbot/'.$newid);
-shell_exec('cd qqbot/'.$newid);
-$command = 'nohup python2 qqbot.py > /dev/null 2>&1 & echo $!';
+$command = 'cd qqbot/'.$newid.'; nohup python2 qqbot.py > /dev/null 2>&1 & echo $!';
 exec($command ,$op);
 $pid = (int)$op[0];
 sqlexec('INSERT INTO `process` VALUES (?,?,?)',array($newid,$pid,$type),$link);
