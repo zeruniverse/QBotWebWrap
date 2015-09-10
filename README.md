@@ -1,4 +1,5 @@
-QQ机器人WEB控制台(QQBOT WEB WRAP)
+QQ机器人WEB控制台  
+(QQBOT WEB WRAP)
 =========  
 [![Build Status](https://travis-ci.org/zeruniverse/QBotWebWrap.svg)](https://travis-ci.org/zeruniverse/QBotWebWrap) ![Environment](https://img.shields.io/badge/PHP-5.2+-blue.svg)
 ![License](https://img.shields.io/github/license/zeruniverse/QBotWebWrap.svg)      
