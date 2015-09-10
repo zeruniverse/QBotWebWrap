@@ -31,3 +31,8 @@ Users no longer need to type command in Terminal. They can now do it with a web 
 + 记录状态页地址并关闭页面  
   
 如需检查LOG，打开您记录下的状态地址即可。  
+  
+##References  
++ [QQParking](https://github.com/zeruniverse/QQParking): 自动回复私聊，留言转发邮箱   
++ [QQRobot](https://github.com/zeruniverse/QQRobot): 群聊小黄鸡      
++ [QzoneLiker](https://github.com/zeruniverse/QzoneLiker): QQ空间自动点赞机   
