@@ -224,7 +224,7 @@ if __name__ == "__main__":
         qqLogin = Login(vpath, qq)
     except Exception, e:
         logging.critical(str(e))
-        os._exit()
+        os._exit(1)
     errtime=0
     while True:
         try:
