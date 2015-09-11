@@ -813,7 +813,7 @@ if __name__ == "__main__":
         qqLogin = Login(vpath, qq)
     except Exception, e:
         logging.error(str(e))
-        os._exit()
+        os._exit(1)
     try:
         t_check = check_msg()
         t_check.setDaemon(True)
