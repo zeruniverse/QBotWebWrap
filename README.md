@@ -32,7 +32,6 @@ Users no longer need to type command in Terminal. They can now do it with a web 
 + 等待QR CODE消失  
 + 记录SID并关闭页面（可用SID在首页重新进入状态页）  
   
-如需检查LOG，打开您记录下的状态地址即可。  
   
 ##References  
 + [QQParking](https://github.com/zeruniverse/QQParking): 自动回复私聊，留言转发邮箱   
