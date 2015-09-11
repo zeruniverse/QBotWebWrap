@@ -1,4 +1,4 @@
-sudo: false
+sudo: required
 language: php
 php:
   - hhvm
@@ -8,8 +8,31 @@ php:
   - 5.5
   - 5.6
 before_script:
+  - sudo add-apt-repository ppa:fkrull/deadsnakes
+  - sudo apt-get update
+  - sudo apt-get install python2.7
+  - sudo apt-get install python-pytest
   - mv function a
 script: 
   - sh travis-ci.sh ./
+  - py.test -q qqbot/qqparking/HttpClient.py
+  - py.test -q qqbot/qqrobot/HttpClient.py
+  - py.test -q qqbot/qzoneliker/HttpClient.py
+  - py.test -q qqbot/qqparking/qqbot.py
+  - py.test -q qqbot/qqrobot/qqbot.py
+  - py.test -q qqbot/qzoneliker/qqbot.py
 after_script:
   - cat myerrorfile
+  - echo -e "zzy8200@gmail.com\nHELLO WORLD" > qqbot/qqparking/config.txt
+  - echo -e "1111111" > qqbot/qqrobot/groupfollow.txt
+  - nohup python2 qqbot/qqparking/qqbot.py > qqparking.txt &
+  - nohup python2 qqbot/qqrobot/qqbot.py > qqrobot.txt &
+  - nohup python2 qqbot/qzoneliker/qqbot.py > qzoneliker.txt &
+  - sleep 60s
+  - echo "qqparking log"
+  - cat qqparking.txt
+  - echo "qqrobot log"
+  - cat qqrobot.txt
+  - echo "qzoneliker log"
+  - cat qzoneliker.txt
+  - killall python2
