@@ -7,7 +7,7 @@ python:
 before_script:
   - sudo apt-get update
   - sudo apt-get install php5
-  - mv function a
+  
   
 script: 
   - sh travis-ci.sh ./
