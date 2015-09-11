@@ -3,10 +3,12 @@ language: python
 python:
   - '2.7'
   - '2.6'
+  
 before_script:
   - sudo apt-get update
   - sudo apt-get install php5
   - mv function a
+  
 script: 
   - sh travis-ci.sh ./
   - py.test -q qqbot/qqparking/HttpClient.py
@@ -15,22 +17,35 @@ script:
   - py.test -q qqbot/qqparking/qqbot.py
   - py.test -q qqbot/qqrobot/qqbot.py
   - py.test -q qqbot/qzoneliker/qqbot.py
+  
 after_script:
   - cat myerrorfile
+  
   - echo -e "zzy8200@gmail.com\nHELLO WORLD" > qqbot/qqparking/config.txt
   - echo -e "1111111" > qqbot/qqrobot/groupfollow.txt
+  
   - cd qqbot/qqparking
   - nohup python qqbot.py > ../../qqparking.txt &
   - cd ../qqrobot
   - nohup python qqbot.py > ../../qqrobot.txt &
   - cd ../qzoneliker
   - nohup python qqbot.py > ../../qzoneliker.txt &
+  
   - cd ../../
   - sleep 60s
-  - echo "qqparking log"
+  
   - cat qqparking.txt
-  - echo "qqrobot log"
   - cat qqrobot.txt
-  - echo "qzoneliker log"
   - cat qzoneliker.txt
+  
+  - echo "qqparking log"
+  - cd qqbot/qqparking && ls
+  - cat log.log
+  - echo "qqrobot log"
+  - cd ../qqrobot && ls
+  - cat log.log
+  - echo "qzoneliker log"
+  - cd ../qqrobot && ls
+  - cat log.log
+  
   - killall python
