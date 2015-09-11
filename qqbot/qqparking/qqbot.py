@@ -29,7 +29,7 @@ mailpass = 'uyyxdrzrrxntidkh'
 
 #LOADED FROM FILE
 sendtomail = '#send to which mail box. e.g.: recv@gmail.com'
-welcomeMessage = '我现在不在！'
+welcomeMessage = '您好，我现在不在电脑旁！'
 #---END OF SECTION---
 
 HttpClient_Ist = HttpClient()
@@ -485,8 +485,12 @@ class Login(HttpClient):
         
         f=open('config.txt','rt')
         sendtomail=f.readline().replace("\n","").replace("\r","")
-        welcomeMessage=f.readline().replace("\n","").replace("\r","")
+        msg=f.readline().replace("\n","").replace("\r","")
         f.close()
+        if sendtomail=='':
+            raise ValueError, 'MUST INPUT NOTIFICATION MAILBOX!'
+        if msg!='':
+            welcomeMessage = msg
         logging.info("配置： 提醒邮箱："+str(sendtomail)+"；欢迎信息："+str(welcomeMessage))
         
         logging.critical("正在获取登陆页面")
@@ -681,11 +685,6 @@ class check_msg(threading.Thread):
 
 class pmchat_thread(threading.Thread):
 
-    
-    # con = threading.Condition()
-    autoreply = welcomeMessage+'接下来由小黄鸡代我与您聊天！在聊天时输入【record】可以开始给我留言，(英文单词: record），输入此命令并在收到提示后输入留言内容即可.record前面不能有空格（r需为该消息的第一个字符），举例:\nrecord\n\n(系统提示消息)\n\n（留言内容）\n\n(系统提示：留言已记录)'
-    # newIp = ''
-
     def __init__(self, tuin, isSess, group_sig, service_type,ini_txt,ini_msgid,myid):
         threading.Thread.__init__(self)
         self.tuin = tuin
@@ -701,6 +700,7 @@ class pmchat_thread(threading.Thread):
         self.ini_msgid=ini_msgid
         self.sess_group_id = myid
         self.replystreak = 0
+        self.autoreply = welcomeMessage+'接下来由小黄鸡代我与您聊天！在聊天时输入【record】可以开始给我留言，(英文单词: record），输入此命令并在收到提示后输入留言内容即可.record前面不能有空格（r需为该消息的第一个字符），举例:\nrecord\n\n(系统提示消息)\n\n（留言内容）\n\n(系统提示：留言已记录)'
     def check(self):
         self.lastcheck = time.time()
     def run(self):
