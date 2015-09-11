@@ -78,13 +78,13 @@ if ($result==FALSE)  die('THIS PROCESS DOES NOT EXISTS OR ALREADY TERMINATED AND
 <p>4. Confirm that you successfully Login in Log.</p>
 <p>5. Close this page and have a coffee!</p>
 <p><br /></p>
-<p>Please keep <span style="color:red">your session ID (SID):</span> <span style="color:blue"><?php echo $result['sid']; ?></span>. You can go back to check the log or download the log file.</p>
+<p>Please keep <span style="color:red">your session ID (SID):</span> <span style="color:blue"><?php echo $result['sid']; ?></span>. You can go back to check the log, download the log file or terminate your bot. (keep SID confidential)</p>
 <p>The QR Code and Log refreshes every 5 seconds.</p>
-<p>The last few lines of log will be on the screen. If you want all log, please download the log (at the bottom of this page). </p>
+<p>The last few lines of log will be on the screen. If you want all log, please download the log (at the bottom of the log field). </p>
 <p><br /></p>
 <p>请等待二维码生成，当二维码生成后，下面的QR CODE部分会自动显示生成的二维码，在这以前请不要离开此页！</p>
 <p>用手机QQ/安全中心扫描二维码，成功登陆后二维码会消失。二维码消失后即可关闭此页！</p>
-<p>如果您需要返回检查LOG，请记住本次挂机的SID： <span style="color:blue"><?php echo $result['sid']; ?></span> (6位大写字母)，在首页输入这个SID可以返回本页！</p>
+<p>如果您需要返回检查LOG，请记住本次挂机的SID： <span style="color:blue"><?php echo $result['sid']; ?></span> (6位大写字母)，在首页输入这个SID可以返回本页！(不要告诉别人SID,否则LOG会被偷看,bot可能被他人终止)</p>
 </div>
 
       <div class="page-header">
@@ -98,6 +98,12 @@ if ($result==FALSE)  die('THIS PROCESS DOES NOT EXISTS OR ALREADY TERMINATED AND
 
       </div>
       <div style="text-align:right;"><a href="logdownload.php?id=<?php echo $result['sid'];?>">DOWNLOAD LOG</a></div>
+      <div class="page-header">
+        <h1>TERMINATE THE BOT</h1>
+	  </div>
+	  <p>There is no go back! After click the following button, you have to login again! 结束机器人（不可逆操作）</p>
+	  <p><button class="btn btn-lg btn-error" onClick="killit();">TERMINATE IT (DANGEROUS!!!)</button></p>
+
 </div>
 <script>
 function replc(strmsg)
@@ -123,6 +129,20 @@ refreshs();
 timer = setInterval(function(){
 		refreshs();
 	},5000);
+
+function killit()
+{
+    if(!confirm("ARE YOU SURE YOU WANT TO TERMINATE THIS PROCESS?\nYour bot will be forced to exit immediately WITHOUT email notification.")) return ;
+    $.post('killit.php',{id:"<?php echo $result['sid'];?>"},function (msg)
+    {
+        var obj = JSON.parse(msg);
+        if (obj.retcode != 0) {alert(obj.msg+' KILL PROCESS FAIL!'); location.reload();return;}
+        else {
+            alert("SUCCESSFULLY terminate this process. This page will expire soon.\nThe Bot no longer run now.\nIf you want to backup your log, DO IT IMMEDIATELY!");
+        }
+    }
+    );
+}
 </script>
 <footer class="footer ">
       <p>&copy; Jeffery</p>
