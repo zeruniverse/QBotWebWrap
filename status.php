@@ -3,9 +3,9 @@ require_once('function/sqllink.php');
 if(!isset($_GET['id'])) die('CAN NOT FIND ID IN THE PARAMETER');
 $link=sqllink();
 if(!$link) die('DATABASE ERROR');
-$res=sqlexec('SELECT * FROM `process` where `id`=?',array($_GET['id']),$link);
+$res=sqlexec('SELECT * FROM `process` where `sid`=?',array($_GET['id']),$link);
 $result=$res->fetch(PDO::FETCH_ASSOC);
-if ($result==FALSE)  die('THIS PROCESS ALREADY TERMINATED AND REMOVED FROM THE SERVER!');
+if ($result==FALSE)  die('THIS PROCESS DOES NOT EXISTS OR ALREADY TERMINATED AND REMOVED FROM THE SERVER!');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -49,13 +49,13 @@ if ($result==FALSE)  die('THIS PROCESS ALREADY TERMINATED AND REMOVED FROM THE S
 				
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
-						<li>
-							<a href="./index.html">Index</a>
+						<li class="active">
+							<a href="./index.html">Status</a>
 						</li>
-						<li <?php if ($result['type']=='qqparking') echo 'class="active"'?>>
+						<li>
 							<a href="./qqparking.html">QQParking</a>
 						</li>
-						<li <?php if ($result['type']=='qqrobot') echo 'class="active"'?>>
+						<li>
 							<a href="./qqrobot.html">QQRobot</a>
 						</li>
                         <li <?php if ($result['type']=='qzoneliker') echo 'class="active"'?>>
@@ -78,7 +78,7 @@ if ($result==FALSE)  die('THIS PROCESS ALREADY TERMINATED AND REMOVED FROM THE S
 <p>4. Confirm that you successfully Login in Log.</p>
 <p>5. Close this page and have a coffee!</p>
 <p><br /></p>
-<p>Please keep the address of this page (http://../status.php?id=xxx). You can go back to check the log or download the log file.</p>
+<p>Please keep <span style="color:red">your session ID:</span> <span style="color:blue"><?php echo $result['sid']; ?></span>. You can go back to check the log or download the log file.</p>
 <p>The QR Code and Log refreshes every 5 seconds.</p>
 <p>The last few lines of log will be on the screen. If you want all log, please download the log (at the bottom of this page). </p>
 </div>
@@ -93,7 +93,7 @@ if ($result==FALSE)  die('THIS PROCESS ALREADY TERMINATED AND REMOVED FROM THE S
       <div id="log" class="jumbotron">
 
       </div>
-      <div style="text-align:right;"><a href="logdownload.php?id=<?php echo $result['id'];?>">DOWNLOAD LOG</a></div>
+      <div style="text-align:right;"><a href="logdownload.php?id=<?php echo $result['sid'];?>">DOWNLOAD LOG</a></div>
 </div>
 <script>
 function replc(strmsg)
@@ -108,8 +108,8 @@ function replc(strmsg)
 }
 function refreshs()
 {
-    $("#qrcode").attr("src",'image.php?id=<?php echo $result['id']?>&p=' + Math.random() + '.jpg');
-    $.post('log.php',{id:'<?php echo $result['id']?>'},function (msg)
+    $("#qrcode").attr("src",'image.php?id=<?php echo $result['sid']?>&p=' + Math.random() + '.jpg');
+    $.post('log.php',{id:'<?php echo $result['sid']?>'},function (msg)
     {
         $('#log').html(replc(msg));
     }

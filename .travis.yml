@@ -47,7 +47,7 @@ after_script:
   - cd ../qqrobot && ls
   - cat log.log
   - echo "qzoneliker log"
-  - cd ../qqrobot && ls
+  - cd ../qzoneliker && ls
   - cat log.log
   
   - killall python

@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 CREATE TABLE IF NOT EXISTS `process` (
   `id` int(11) NOT NULL DEFAULT '0',
   `pid` int(11) DEFAULT NULL,
-  `type` varchar(10) NOT NULL,
+  `sid` varchar(10) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
