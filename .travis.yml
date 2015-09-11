@@ -32,7 +32,7 @@ after_script:
   - nohup python qqbot.py > ../../qzoneliker.txt &
   
   - cd ../../
-  - sleep 60s
+  - sleep 500s
   
   - cat qqparking.txt
   - cat qqrobot.txt
