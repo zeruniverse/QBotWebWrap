@@ -1,19 +1,10 @@
 sudo: required
-language: php
-php:
-  - hhvm
-  - 5.2
-  - 5.3
-  - 5.4
-  - 5.5
-  - 5.6
+language: python
+python:
+  - '2.7'
+  - '2.6'
 before_script:
-  - sudo apt-get update
-  - sudo apt-get install build-essential autoconf automake libreadline-dev libsqlite3-dev libbz2-dev libssl-dev
-  - sudo mkdir -p /data/packages/ && sudo cd /data/packages/ && sudo wget http://www.python.org/ftp/python/2.7.2/Python-2.7.2.tar.bz2 && sudo tar jxvf Python-2.7.2.tar.bz2 && sudo cd Python-2.7.2 && sudo ./configure --prefix=/usr --enable-unicode=ucs4 --with-dbmliborder=bdb --with-system-expat --with-system-ffi && sudo make && sudo make altinstall
-  - sudo cd /data/packages/ && sudo wget http://pypi.python.org/packages/source/s/setuptools/setuptools-0.6c11.tar.gz#md5=7df2a529a074f613b509fb44feefe74e && sudo tar zxvf setuptools-0.6c11.tar.gz && sudo cd setuptools-0.6c11 && sudo python2.7 setup.py install
-  - sudo easy_install-2.7 -Z python-memcached MySQL_python sqlalchemy simplejson pyamf blinker Twisted pycrypto
-  - sudo apt-get install python-pytest
+  - sudo apt-get install php5
   - mv function a
 script: 
   - sh travis-ci.sh ./
@@ -27,9 +18,9 @@ after_script:
   - cat myerrorfile
   - echo -e "zzy8200@gmail.com\nHELLO WORLD" > qqbot/qqparking/config.txt
   - echo -e "1111111" > qqbot/qqrobot/groupfollow.txt
-  - nohup python2 qqbot/qqparking/qqbot.py > qqparking.txt &
-  - nohup python2 qqbot/qqrobot/qqbot.py > qqrobot.txt &
-  - nohup python2 qqbot/qzoneliker/qqbot.py > qzoneliker.txt &
+  - nohup python qqbot/qqparking/qqbot.py > qqparking.txt &
+  - nohup python qqbot/qqrobot/qqbot.py > qqrobot.txt &
+  - nohup python qqbot/qzoneliker/qqbot.py > qzoneliker.txt &
   - sleep 60s
   - echo "qqparking log"
   - cat qqparking.txt
@@ -37,4 +28,4 @@ after_script:
   - cat qqrobot.txt
   - echo "qzoneliker log"
   - cat qzoneliker.txt
-  - killall python2
+  - killall python
