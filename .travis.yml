@@ -33,6 +33,8 @@ after_script:
   
   - cd ../../
   - sleep 500s
+  - echo "still waiting"
+  - sleep 500s
   
   - cat qqparking.txt
   - cat qqrobot.txt
