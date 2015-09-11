@@ -41,7 +41,7 @@
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
 						<li>
-							<a href="./index.html">Index</a>
+							<a href="./index.html">Status</a>
 						</li>
 						<li>
 							<a href="./qqparking.html">QQParking</a>
@@ -64,7 +64,10 @@
 	  </div>
       <form>
       <p>See Usage: <a href="https://github.com/zeruniverse/QzoneLiker">https://github.com/zeruniverse/QzoneLiker</a></p>
+      <p>QQ空间点赞机，如需掉线邮件提醒请填入邮箱，否则请留空</p>
       <p><br /></p>
+      <p>Email to receive kick-off message (下线提醒邮箱，如不需要提醒请留空):</p>
+      <p><input type="text" id="email" placeholder="eg@eg.com" /></p>
       </form>
       <div><button id="bbbtn" onClick="sub();" class="btn btn-success btn-lg" role="button">RUN QZoneLiker</button></div>
 </div>
@@ -73,11 +76,11 @@ function sub()
 {
     $('#bbbtn').attr('disabled','disabled');
     $('#bbbtn').html('LOADING...');
-    $.post('create.php',{type:'qzoneliker'},function (msg)
+    $.post('create.php',{type:'qzoneliker',email:$('#email').val()},function (msg)
     {
         var obj = JSON.parse(msg);
         var addhtml='';
-        if (obj.retcode != 0) {alert(msg+' FAIL!'); location.reload();return;}
+        if (obj.retcode != 0) {alert(obj.msg+' FAIL!'); location.reload();return;}
         else {
             var e=obj.id;
             window.location.href="./status.php?id="+e;

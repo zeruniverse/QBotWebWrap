@@ -41,7 +41,7 @@
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
 						<li class="active">
-							<a href="./index.html">Index</a>
+							<a href="./index.html">Status</a>
 						</li>
 						<li>
 							<a href="./qqparking.html">QQParking</a>
@@ -63,12 +63,20 @@
         <h1>Welcome</h1>
 	  </div>
       <div class="jumbotron">
-      	<p>Choose the type of QBot you want to run on the navigation bar!</p>
+      	<p>Choose the type of QBot you want to run on the navigation bar! (在导航栏选择您要挂机的种类)</p>
         <p><br /></p>
-        <p>STEP 1: Input Necessary Information</p>
-        <p>STEP 2: Click Start button</p>
-        <p>STEP 3: Scan QRCode</p>
+        <p>STEP 1: Input Necessary Information (输入必要信息)</p>
+        <p>STEP 2: Click Start button (点击开始按钮)</p>
+        <p>STEP 3: Scan QRCode (用手机QQ/安全中心扫描二维码登录)</p>
       </div>
+      <div class="page-header">
+        <h1>Check Status</h1>
+	  </div>
+      	<p>If you already scanned QR Code, you can check your status here with your SID (the string you see on the QRCODE page)</p>
+        <p>您可以使用您的SID查询您的挂机状态。SID是您扫描二维码页面看到的字符串。</p>
+        <p></p>
+        <p>SID: <input type="text" placeholder="YOUR SID HERE" id="sid" /></p>
+        <p><button class="btn btn-lg btn-info" onClick="window.location.href='status.php?id='+$('#sid').val();">CHECK MY STATUS</button></p>
 </div>
 <footer class="footer ">
       <p>&copy; Jeffery</p>

@@ -121,7 +121,7 @@ def sendfailmail():
         msg['Subject'] = Header(SUBJECT, 'utf-8')
         msg['From'] = mailsig+'<'+mailuser+'>'
         msg['To'] = ', '.join(TO)
-        part = MIMEText("Fatal error occured. Please restart the program and login again!", 'plain', 'utf-8')
+        part = MIMEText("Fatal error occured. Please go to the website and login again!", 'plain', 'utf-8')
         msg.attach(part)
         server = smtplib.SMTP(mailserver, 25)
         server.login(mailuser, mailpass)

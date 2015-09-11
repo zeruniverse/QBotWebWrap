@@ -10,7 +10,11 @@ import time
 import threading
 import logging
 import urllib
+import smtplib
 from HttpClient import HttpClient
+from email.Header import Header
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 reload(sys)
 sys.setdefaultencoding("utf-8")
@@ -31,7 +35,17 @@ Referer = 'http://d.web2.qq.com/proxy.html?v=20130916001&callback=1&id=2'
 SmartQQUrl = 'http://w.qq.com/login.html'
 VFWebQQ = ''
 AdminQQ = '0'
-tulingkey='c7c5abbc9ec9cad3a63bde71d17e3c2c'
+
+#SET YOUR OWN PARAMETERS HERE
+tulingkey = 'c7c5abbc9ec9cad3a63bde71d17e3c2c'
+mailserver = 'smtp.126.com'
+mailsig = 'QQRobot Notification'
+mailuser = 'qqparking@126.com'
+mailpass = 'uyyxdrzrrxntidkh'
+#-----END OF SECTION-------
+
+sendtomail=''
+sendtoflag=0
 
 initTime = time.time()
 
@@ -42,7 +56,26 @@ logging.basicConfig(filename='log.log', level=logging.DEBUG, format='%(asctime)s
 # 方法声明
 # -----------------
 
-
+def sendfailmail():
+    try:
+        SUBJECT = 'QQ小黄鸡下线提醒'
+        TO = [sendtomail]
+        msg = MIMEMultipart('alternative')
+        msg['Subject'] = Header(SUBJECT, 'utf-8')
+        msg['From'] = mailsig+'<'+mailuser+'>'
+        msg['To'] = ', '.join(TO)
+        part = MIMEText("Fatal error occured. Please go to the website and login again!", 'plain', 'utf-8')
+        msg.attach(part)
+        server = smtplib.SMTP(mailserver, 25)
+        server.login(mailuser, mailpass)
+        server.login(mailuser, mailpass)
+        server.sendmail(mailuser, TO, msg.as_string())
+        server.quit()
+        return True
+    except Exception , e:
+        logging.error("发送程序错误邮件失败:"+str(e))
+        return False
+ 
 def pass_time():
     global initTime
     rs = (time.time() - initTime)
@@ -239,7 +272,14 @@ class Login(HttpClient):
     MaxTryTime = 5
 
     def __init__(self, vpath, qq=0):
-        global APPID, AdminQQ, PTWebQQ, VFWebQQ, PSessionID, msgId
+        global APPID, AdminQQ, PTWebQQ, VFWebQQ, PSessionID, msgId, sendtoflag, sendtomail  
+        
+        f=open('email.txt','rt')
+        sendtomail=f.readline().replace("\n","").replace("\r","")
+        f.close()
+        if sendtomail!='':
+            sendtoflag=1
+        
         self.VPath = vpath  # QRCode保存路径
         AdminQQ = int(qq)
         logging.critical("正在获取登陆页面")
@@ -695,9 +735,7 @@ if __name__ == "__main__":
     except Exception, e:
         logging.critical(str(e))
         os._exit()
-    t_check = check_msg()
-    t_check.setDaemon(True)
-    t_check.start()
+
     try:        
         with open('groupfollow.txt','r') as f:
             for line in f:
@@ -705,6 +743,19 @@ if __name__ == "__main__":
             logging.info("关注:"+str(GroupWatchList))
     except Exception, e:
         logging.error("读取组存档出错:"+str(e))
-            
-                
-    t_check.join()
+    
+    try:
+    t_check = check_msg()
+    t_check.setDaemon(True)
+    t_check.start() 
+    t_check.join()    
+    except:
+        pass
+    if sendtoflag!=0:
+        logging.info("发送下线邮件...")
+        errortime=0
+        while errortime<5:
+            errortime=errortime+1
+            if sendfailmail():
+                break           
+

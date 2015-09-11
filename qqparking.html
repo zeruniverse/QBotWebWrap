@@ -41,7 +41,7 @@
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
 						<li>
-							<a href="./index.html">Index</a>
+							<a href="./index.html">Status</a>
 						</li>
 						<li class="active">
 							<a href="./qqparking.html">QQParking</a>
@@ -64,6 +64,7 @@
 	  </div>
       <form>
       <p>See Usage: <a href="https://github.com/zeruniverse/QQParking">https://github.com/zeruniverse/QQParking</a></p>
+      <p>QQ挂机，私聊自动回复离开信息并调用人工智能库与对方聊天。对方留言记录并发送至您的邮箱</p>
       <p><br /></p>
       <p>Email to Receive Notification: <input type="text" id="email" /></p>
       <p>Welcome Message: <input type="text" id="welcomemessage" /></p>
@@ -79,7 +80,7 @@ function sub()
     {
         var obj = JSON.parse(msg);
         var addhtml='';
-        if (obj.retcode != 0) {alert(msg+' FAIL!'); location.reload();return;}
+        if (obj.retcode != 0) {alert(obj.msg+' FAIL!'); location.reload();return;}
         else {
             var e=obj.id;
             window.location.href="./status.php?id="+e;

@@ -10,13 +10,26 @@ import time
 import threading
 import logging
 import urllib
+import smtplib
 from HttpClient import HttpClient
+from email.Header import Header
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
 # CONFIGURATION FIELD
 checkFrequency = 180
+
+#SET YOUR OWN PARAMETERS HERE
+tulingkey = 'c7c5abbc9ec9cad3a63bde71d17e3c2c'
+mailserver = 'smtp.126.com'
+mailsig = 'QzoneLiker Notification'
+mailuser = 'qqparking@126.com'
+mailpass = 'uyyxdrzrrxntidkh'
+#-----END OF SECTION-------
+
 #check every k seconds
 # STOP EDITING HERE
 HttpClient_Ist = HttpClient()
@@ -25,10 +38,32 @@ skey = ''
 Referer = 'http://user.qzone.qq.com/'
 QzoneLoginUrl = 'http://xui.ptlogin2.qq.com/cgi-bin/xlogin?proxy_url=http%3A//qzs.qq.com/qzone/v6/portal/proxy.html&daid=5&pt_qzone_sig=1&hide_title_bar=1&low_login=0&qlogin_auto_login=1&no_verifyimg=1&link_target=blank&appid=549000912&style=22&target=self&s_url=http%3A%2F%2Fqzs.qq.com%2Fqzone%2Fv5%2Floginsucc.html%3Fpara%3Dizone&pt_qr_app=%E6%89%8B%E6%9C%BAQQ%E7%A9%BA%E9%97%B4&pt_qr_link=http%3A//z.qzone.com/download.html&self_regurl=http%3A//qzs.qq.com/qzone/v6/reg/index.html&pt_qr_help_link=http%3A//z.qzone.com/download.html'
 
+sendtomail=''
+sendtoflag=0
+
 initTime = time.time()
 
 
 logging.basicConfig(filename='log.log', level=logging.DEBUG, format='%(asctime)s  %(filename)s[line:%(lineno)d] %(levelname)s %(message)s', datefmt='%a, %d %b %Y %H:%M:%S')
+def sendfailmail():
+    try:
+        SUBJECT = 'QQ点赞机下线提醒'
+        TO = [sendtomail]
+        msg = MIMEMultipart('alternative')
+        msg['Subject'] = Header(SUBJECT, 'utf-8')
+        msg['From'] = mailsig+'<'+mailuser+'>'
+        msg['To'] = ', '.join(TO)
+        part = MIMEText("Fatal error occured. Please go to the website and login again!", 'plain', 'utf-8')
+        msg.attach(part)
+        server = smtplib.SMTP(mailserver, 25)
+        server.login(mailuser, mailpass)
+        server.login(mailuser, mailpass)
+        server.sendmail(mailuser, TO, msg.as_string())
+        server.quit()
+        return True
+    except Exception , e:
+        logging.error("发送程序错误邮件失败:"+str(e))
+        return False
 
 def getAbstime():
     return int(time.time())
@@ -55,7 +90,15 @@ class Login(HttpClient):
     MaxTryTime = 5
 
     def __init__(self, vpath, qq=0):
-        global UIN, Referer, skey
+        global UIN, Referer, skey, sendtoflag, sendtomail
+        
+        f=open('email.txt','rt')
+        sendtomail=f.readline().replace("\n","").replace("\r","")
+        f.close()
+        if sendtomail!='':
+            sendtoflag=1
+        
+        
         self.VPath = vpath  # QRCode保存路径
         AdminQQ = int(qq)
         logging.critical("正在获取登陆页面")
@@ -194,3 +237,10 @@ if __name__ == "__main__":
         except Exception, e:
             logging.error(str(e))
             errtime = errtime + 1
+    if sendtoflag!=0:
+        logging.info("发送下线邮件...")
+        errortime=0
+        while errortime<5:
+            errortime=errortime+1
+            if sendfailmail():
+                break

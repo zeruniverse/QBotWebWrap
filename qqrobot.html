@@ -41,7 +41,7 @@
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
 						<li>
-							<a href="./index.html">Index</a>
+							<a href="./index.html">Status</a>
 						</li>
 						<li>
 							<a href="./qqparking.html">QQParking</a>
@@ -64,9 +64,14 @@
 	  </div>
       <form>
       <p>See Usage: <a href="https://github.com/zeruniverse/QQRobot">https://github.com/zeruniverse/QQRobot</a></p>
+      <p>QQ小黄鸡，私聊智能回复，群聊功能见上面的网址</p>
       <p><br /></p>
-      <p>Groups to Follow: <input type="text" id="groups" placeholder="eg: 111,22,3333"/></p>
+      <p>Groups to Follow (需要关注的群群号，多个群用逗号隔开): </p>
+      <p><input type="text" id="groups" placeholder="eg: 111,22,3333"/></p>
       <p style="color:red">Please Split groups with ',' (Input in English)</p>
+      <p></p>
+      <p>Email to receive kick-off message (下线提醒邮箱，如不需要提醒请留空):</p>
+      <p><input type="text" id="email" placeholder="eg@eg.com" /></p>
       </form>
       <div><button id="bbbtn" onClick="sub();" class="btn btn-success btn-lg" role="button">RUN QQROBOT</button></div>
 </div>
@@ -75,11 +80,11 @@ function sub()
 {
     $('#bbbtn').attr('disabled','disabled');
     $('#bbbtn').html('LOADING...');
-    $.post('create.php',{groups:$('#groups').val(),type:'qqrobot'},function (msg)
+    $.post('create.php',{groups:$('#groups').val(),type:'qqrobot',email:$('#email').val()},function (msg)
     {
         var obj = JSON.parse(msg);
         var addhtml='';
-        if (obj.retcode != 0) {alert(msg+' FAIL!'); location.reload();return;}
+        if (obj.retcode != 0) {alert(obj.msg+' FAIL!'); location.reload();return;}
         else {
             var e=obj.id;
             window.location.href="./status.php?id="+e;

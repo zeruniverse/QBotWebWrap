@@ -1,5 +1,15 @@
 <?php
 $MAXPROCESS=10;
+function randomstr(){
+    $code = '';
+    for($i=1;$i<=6;$i++)
+	{
+		$c=rand(0,25);
+		$code=$code.chr($c+ord("A"));
+	}
+    return $code;
+}
+
 function deldir($dir){
   $dh=opendir($dir);
 
@@ -90,11 +100,13 @@ $result=$res->fetch(PDO::FETCH_NUM);
 $maxnum=($result==FALSE)?0:(int)($result[0]);
 $newid=$maxnum+1;
 
-$type="";
 switch ($_POST['type']) {
     case 'qzoneliker':
         if (dcopy('qqbot/qzoneliker', 'qqbot/'.$newid)==0) {$link->rollBack(); die('{"retcode":999,"msg":"UNABLE TO CREATE FOLDER!"}');}
-        $type='qzoneliker';
+        $myfile = fopen('qqbot/'.$newid."/email.txt", "w");
+		if(!$myfile) {$link->rollBack(); deldir('qqbot/'.$newid); die('{"retcode":996,"msg":"UNABLE TO CREATE GROUPFOLLOW.TXT!"}');}
+        fwrite($myfile, $_POST['email']);
+        fclose($myfile);
         break;
     case 'qqrobot':
         if (dcopy('qqbot/qqrobot', 'qqbot/'.$newid)==0) {$link->rollBack(); die('{"retcode":999,"msg":"UNABLE TO CREATE FOLDER!"}');}
@@ -102,7 +114,10 @@ switch ($_POST['type']) {
 		if(!$myfile) {$link->rollBack(); deldir('qqbot/'.$newid); die('{"retcode":996,"msg":"UNABLE TO CREATE GROUPFOLLOW.TXT!"}');}
         fwrite($myfile, $_POST['groups']);
         fclose($myfile);
-        $type='qqrobot';
+        $myfile = fopen('qqbot/'.$newid."/email.txt", "w");
+		if(!$myfile) {$link->rollBack(); deldir('qqbot/'.$newid); die('{"retcode":996,"msg":"UNABLE TO CREATE GROUPFOLLOW.TXT!"}');}
+        fwrite($myfile, $_POST['email']);
+        fclose($myfile);
         break;
     case 'qqparking':
         if (dcopy('qqbot/qqparking', 'qqbot/'.$newid)==0) {$link->rollBack(); die('{"retcode":999,"msg":"UNABLE TO CREATE FOLDER!"}');}
@@ -111,7 +126,6 @@ switch ($_POST['type']) {
         fwrite($myfile, $_POST['email']."\n");
         fwrite($myfile, $_POST['welcome']."\n");
         fclose($myfile);
-        $type='qqparking';
         break;
     default:
         $link->rollBack();
@@ -123,7 +137,16 @@ shell_exec('chmod -R +w qqbot/'.$newid);
 $command = 'cd qqbot/'.$newid.'; nohup python2 qqbot.py > /dev/null 2>&1 & echo $!';
 exec($command ,$op);
 $pid = (int)$op[0];
-sqlexec('INSERT INTO `process` VALUES (?,?,?)',array($newid,$pid,$type),$link);
+
+while (true){
+	$sid=randomstr();
+	$sql="SELECT COUNT(*) FROM `process`  WHERE `sid`=?";
+	$res=sqlexec($sql,array($sid),$link);
+    $num= $res->fetch(PDO::FETCH_NUM);
+    $num=$num[0];
+	if($num==0) break;
+}
+sqlexec('INSERT INTO `process` VALUES (?,?,?)',array($newid,$pid,$sid),$link);
 $link->commit();
-die('{"retcode":0,"reason":"SUCCESS","id":"'.$newid.'"}');
+die('{"retcode":0,"reason":"SUCCESS","id":"'.$sid.'"}');
 ?>
