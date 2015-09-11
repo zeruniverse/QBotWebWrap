@@ -1,6 +1,6 @@
 <?php
 require_once('function/sqllink.php');
-if(!isset($_GET['id'])) die('CAN NOT FIND ID IN THE PARAMETER')
+if(!isset($_GET['id'])) die('CAN NOT FIND ID IN THE PARAMETER');
 $link=sqllink();
 if(!$link) die('DATABASE ERROR');
 $res=sqlexec('SELECT * FROM `process` where `id`=?',array($_GET['id']),$link);
