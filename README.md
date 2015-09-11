@@ -2,7 +2,7 @@ QQ机器人WEB控制台
 =========  
 [![Build Status](https://travis-ci.org/zeruniverse/QBotWebWrap.svg)](https://travis-ci.org/zeruniverse/QBotWebWrap) ![Environment](https://img.shields.io/badge/PHP-5.2+-blue.svg)
 ![Environment](https://img.shields.io/badge/python-2.6, 2.7-blue.svg)
-![Environment](https://img.shields.io/badge/MySQL-required-blue.svg)
+![Environment](https://img.shields.io/badge/MySQL-required-ff69b4.svg)
 ![License](https://img.shields.io/github/license/zeruniverse/QBotWebWrap.svg)      
 ***该项目为QQRobot, QQParking, QzoneLiker提供一个网页版控制台，降低了使用门槛。***
 有关[QQRobot](https://github.com/zeruniverse/QQRobot), [QQParking](https://github.com/zeruniverse/QQParking), [QzoneLiker](https://github.com/zeruniverse/QzoneLiker) 请见原项目。
