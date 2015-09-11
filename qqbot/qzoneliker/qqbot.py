@@ -23,7 +23,6 @@ sys.setdefaultencoding("utf-8")
 checkFrequency = 180
 
 #SET YOUR OWN PARAMETERS HERE
-tulingkey = 'c7c5abbc9ec9cad3a63bde71d17e3c2c'
 mailserver = 'smtp.126.com'
 mailsig = 'QzoneLiker Notification'
 mailuser = 'qqparking@126.com'

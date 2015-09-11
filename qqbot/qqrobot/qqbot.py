@@ -745,10 +745,10 @@ if __name__ == "__main__":
         logging.error("读取组存档出错:"+str(e))
     
     try:
-    t_check = check_msg()
-    t_check.setDaemon(True)
-    t_check.start() 
-    t_check.join()    
+        t_check = check_msg()
+        t_check.setDaemon(True)
+        t_check.start() 
+        t_check.join()    
     except:
         pass
     if sendtoflag!=0:
