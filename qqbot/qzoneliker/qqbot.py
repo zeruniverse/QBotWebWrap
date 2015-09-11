@@ -56,7 +56,7 @@ class Login(HttpClient):
 
     def __init__(self, vpath, qq=0):
         global UIN, Referer, skey
-        self.VPath = vpath  # QRCode保存路径
+      self.VPath = vpath  # QRCode保存路径
         AdminQQ = int(qq)
         logging.critical("正在获取登陆页面")
         self.setCookie('_qz_referrer','qzone.qq.com','qq.com')
