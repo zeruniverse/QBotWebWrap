@@ -4,6 +4,7 @@ python:
   - '2.7'
   - '2.6'
 before_script:
+  - sudo apt-get update
   - sudo apt-get install php5
   - mv function a
 script: 
