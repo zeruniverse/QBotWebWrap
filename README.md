@@ -31,7 +31,7 @@ Users no longer need to type command in Terminal. They can now do it with a web 
 + 用手机QQ/安全中心扫描QR CODE  
 + 等待QR CODE消失  
 + 记录SID并关闭页面（可用SID在首页重新进入状态页）  
-  
++ 使用SID从首页进入状态页检查状态，下载log 或结束自己的BOT（杀死进程）   
   
 ##References  
 + [QQParking](https://github.com/zeruniverse/QQParking): 自动回复私聊，留言转发邮箱   
