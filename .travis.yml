@@ -22,6 +22,8 @@ after_script:
   - cat myerrorfile
   
   - echo -e "zzy8200@gmail.com\nHELLO WORLD" > qqbot/qqparking/config.txt
+  - echo -e "zzy8200@gmail.com" > qqbot/qqrobot/email.txt
+  - echo -e "zzy8200@gmail.com" > qqbot/qzoneliker/email.txt
   - echo -e "1111111" > qqbot/qqrobot/groupfollow.txt
   
   - cd qqbot/qqparking

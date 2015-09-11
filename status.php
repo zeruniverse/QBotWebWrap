@@ -84,7 +84,7 @@ if ($result==FALSE)  die('THIS PROCESS DOES NOT EXISTS OR ALREADY TERMINATED AND
 <p><br /></p>
 <p>请等待二维码生成，当二维码生成后，下面的QR CODE部分会自动显示生成的二维码，在这以前请不要离开此页！</p>
 <p>用手机QQ/安全中心扫描二维码，成功登陆后二维码会消失。二维码消失后即可关闭此页！</p>
-<p>如果您需要返回检查LOG，请记住本次挂机的SID： <?php echo $result['sid']; ?> (6位大写字母)，在首页输入这个SID可以返回本页！</p>
+<p>如果您需要返回检查LOG，请记住本次挂机的SID： <span style="color:blue"><?php echo $result['sid']; ?></span> (6位大写字母)，在首页输入这个SID可以返回本页！</p>
 </div>
 
       <div class="page-header">
