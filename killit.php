@@ -6,6 +6,6 @@ if(!$link) die('{"retcode":99,"msg":"DATABASE ERROR"}');
 $res=sqlexec('SELECT * FROM `process` where `sid`=?',array($_POST['id']),$link);
 $result=$res->fetch(PDO::FETCH_ASSOC);
 if ($result==FALSE)  die('{"retcode":0,"msg":"SUCC"}'); //don't tell malicious person the id does not exist
-shell_exec("kill "+$result['pid']);
+shell_exec("kill ".$result['pid']);
 die('{"retcode":0,"msg":"SUCC"}');
 ?>

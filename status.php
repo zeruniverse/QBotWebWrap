@@ -102,7 +102,7 @@ if ($result==FALSE)  die('THIS PROCESS DOES NOT EXISTS OR ALREADY TERMINATED AND
         <h1>TERMINATE THE BOT</h1>
 	  </div>
 	  <p>There is no go back! After click the following button, you have to login again! 结束机器人（不可逆操作）</p>
-	  <p><button class="btn btn-lg btn-error" onClick="killit();">TERMINATE IT (DANGEROUS!!!)</button></p>
+	  <p><button class="btn btn-lg btn-danger" onClick="killit();">TERMINATE IT (DANGEROUS!!!)</button></p>
 
 </div>
 <script>
@@ -138,7 +138,7 @@ function killit()
         var obj = JSON.parse(msg);
         if (obj.retcode != 0) {alert(obj.msg+' KILL PROCESS FAIL!'); location.reload();return;}
         else {
-            alert("SUCCESSFULLY terminate this process. This page will expire soon.\nThe Bot no longer run now.\nIf you want to backup your log, DO IT IMMEDIATELY!");
+            alert("SUCCESSFULLY terminate this process. This page will expire soon.\nThe Bot no longer runs now.\nIf you want to backup your log, DO IT IMMEDIATELY!");
         }
     }
     );
