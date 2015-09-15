@@ -192,7 +192,7 @@ def like(unikey,curkey,dataid,time):
 def MsgHandler():
     html=HttpClient_Ist.Get(Referer,Referer)
     fkey=re.findall(r'<div class="f-item f-s-i" id=".*?" data-feedsflag=.*?" data-iswupfeed=".*?" data-key="(.*?)" data-specialtype=.*?" data-extend-info=".*?">',html)
-    if fkey is None:
+    if not fkey:
         raise Exception, 'Fail to find any feeds'
     split_string=re.split(r'<div class="f-item f-s-i" id=".*?" data-feedsflag=.*?" data-iswupfeed=".*?" data-key=".*?" data-specialtype=.*?" data-extend-info=".*?">',html)
     for i in range (0,len(fkey)):
