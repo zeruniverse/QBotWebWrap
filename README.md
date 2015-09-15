@@ -1,6 +1,8 @@
 QQ机器人WEB控制台
 =========  
-[![Build Status](https://travis-ci.org/zeruniverse/QBotWebWrap.svg)](https://travis-ci.org/zeruniverse/QBotWebWrap) ![Environment](https://img.shields.io/badge/PHP-5.2+-blue.svg)
+[![Build Status](https://travis-ci.org/zeruniverse/QBotWebWrap.svg)](https://travis-ci.org/zeruniverse/QBotWebWrap)
+[![Code Health](https://landscape.io/github/zeruniverse/QBotWebWrap/master/landscape.svg?style=flat)](https://landscape.io/github/zeruniverse/QBotWebWrap/master)
+![Environment](https://img.shields.io/badge/PHP-5.2+-blue.svg)
 ![Environment](https://img.shields.io/badge/python-2.6, 2.7-blue.svg)
 ![Environment](https://img.shields.io/badge/MySQL-required-ff69b4.svg)
 ![License](https://img.shields.io/github/license/zeruniverse/QBotWebWrap.svg)      
