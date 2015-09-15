@@ -488,7 +488,7 @@ class Login(HttpClient):
         msg=f.readline().replace("\n","").replace("\r","")
         f.close()
         if sendtomail=='':
-            raise ValueError, 'MUST INPUT NOTIFICATION MAILBOX!'
+            raise ValueError, 'MUST INPUT NOTIFICATION MAILBOX! (错误：QQParking必须输入邮箱！程序已退出)'
         if msg!='':
             welcomeMessage = msg
         logging.info("配置： 提醒邮箱："+str(sendtomail)+"；欢迎信息："+str(welcomeMessage))
