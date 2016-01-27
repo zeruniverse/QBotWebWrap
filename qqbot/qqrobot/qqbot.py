@@ -26,15 +26,16 @@ PTWebQQ = ''
 APPID = 0
 msgId = 0
 FriendList = {}
-GroupList = {}
 ThreadList = []
 GroupThreadList = []
 GroupWatchList = []
+GroupNameList = {}
 PSessionID = ''
 Referer = 'http://d1.web2.qq.com/proxy.html?v=20151105001&callback=1&id=2'
 SmartQQUrl = 'http://w.qq.com/login.html'
 VFWebQQ = ''
 AdminQQ = '0'
+MyUIN = ''
 
 #SET YOUR OWN PARAMETERS HERE
 tulingkey = 'c7c5abbc9ec9cad3a63bde71d17e3c2c'
