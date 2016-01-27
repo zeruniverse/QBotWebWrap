@@ -16,13 +16,13 @@ before_script:
   - cp ./qqbot/qzoneliker/qqbot.py 6.py
   
 script: 
-  - sh travis-ci.sh ./
   - py.test -q 1.py
   - py.test -q 2.py
   - py.test -q 3.py
   - py.test -q 4.py
   - py.test -q 5.py
   - py.test -q 6.py
+  - sh travis-ci.sh ./
   
 after_script:
   - cat myerrorfile
