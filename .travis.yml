@@ -10,19 +10,16 @@ before_script:
 
 script: 
   - cd ./qqbot/qqparking
-  - ls
-  - py.test HttpClient.py
-  - py.test qqbot.py
+  - ls -l
+  - py.test
   - cd ../qqrobot
-  - ls
-  - py.test HttpClient.py
-  - py.test qqbot.py
+  - ls -l
+  - py.test
   - cd ../qzoneliker
-  - ls
-  - py.test HttpClient.py
-  - py.test qqbot.py  
+  - ls -l
+  - py.test
   - cd ../../
-  - ls
+  - ls -l
   - sh travis-ci.sh ./
   
 after_script:
