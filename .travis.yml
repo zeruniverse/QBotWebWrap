@@ -11,12 +11,12 @@ before_script:
   
 script: 
   - sh travis-ci.sh ./
-  - py.test -q qqbot/qqparking/HttpClient.py
-  - py.test -q qqbot/qqrobot/HttpClient.py
-  - py.test -q qqbot/qzoneliker/HttpClient.py
-  - py.test -q qqbot/qqparking/qqbot.py
-  - py.test -q qqbot/qqrobot/qqbot.py
-  - py.test -q qqbot/qzoneliker/qqbot.py
+  - py.test -q ./qqbot/qqparking/HttpClient.py
+  - py.test -q ./qqbot/qqrobot/HttpClient.py
+  - py.test -q ./qqbot/qzoneliker/HttpClient.py
+  - py.test -q ./qqbot/qqparking/qqbot.py
+  - py.test -q ./qqbot/qqrobot/qqbot.py
+  - py.test -q ./qqbot/qzoneliker/qqbot.py
   
 after_script:
   - cat myerrorfile
