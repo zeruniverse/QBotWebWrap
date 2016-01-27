@@ -10,7 +10,7 @@ before_script:
   - mv function a
   - cp ./qqbot/qqparking/HttpClient.py 1.py
   - cp ./qqbot/qqrobot/HttpClient.py 2.py
-  - cp ./qqbot/qqzoneliker/HttpClient.py 3.py
+  - cp ./qqbot/qzoneliker/HttpClient.py 3.py
   - cp ./qqbot/qqparking/qqbot.py 4.py
   - cp ./qqbot/qqrobot/qqbot.py 5.py
   - cp ./qqbot/qzoneliker/qqbot.py 6.py
