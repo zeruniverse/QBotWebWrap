@@ -8,20 +8,18 @@ before_script:
   - sudo apt-get update
   - sudo apt-get install php5
   - mv function a
-  - cp ./qqbot/qqparking/HttpClient.py 1.py
-  - cp ./qqbot/qqrobot/HttpClient.py 2.py
-  - cp ./qqbot/qzoneliker/HttpClient.py 3.py
-  - cp ./qqbot/qqparking/qqbot.py 4.py
-  - cp ./qqbot/qqrobot/qqbot.py 5.py
-  - cp ./qqbot/qzoneliker/qqbot.py 6.py
-  
+
 script: 
-  - py.test -q 1.py
-  - py.test -q 2.py
-  - py.test -q 3.py
-  - py.test -q 4.py
-  - py.test -q 5.py
-  - py.test -q 6.py
+  - cd ./qqbot/qqparking
+  - py.test -q HttpClient.py
+  - py.test -q qqbot.py
+  - cd ../qqrobot
+  - py.test -q HttpClient.py
+  - py.test -q qqbot.py
+  - cd ../qzoneliker
+  - py.test -q HttpClient.py
+  - py.test -q qqbot.py  
+  - cd ../../
   - sh travis-ci.sh ./
   
 after_script:
