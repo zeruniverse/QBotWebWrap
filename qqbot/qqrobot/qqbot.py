@@ -21,7 +21,7 @@ sys.setdefaultencoding("utf-8")
 
 HttpClient_Ist = HttpClient()
 
-ClientID = int(random.uniform(111111, 888888))
+ClientID = 53999199
 PTWebQQ = ''
 APPID = 0
 msgId = 0
@@ -31,7 +31,7 @@ ThreadList = []
 GroupThreadList = []
 GroupWatchList = []
 PSessionID = ''
-Referer = 'http://d.web2.qq.com/proxy.html?v=20130916001&callback=1&id=2'
+Referer = 'http://d1.web2.qq.com/proxy.html?v=20151105001&callback=1&id=2'
 SmartQQUrl = 'http://w.qq.com/login.html'
 VFWebQQ = ''
 AdminQQ = '0'
@@ -82,6 +82,41 @@ def pass_time():
     initTime = time.time()
     return str(round(rs, 3))
 
+def get_ts():
+    ts = time.time()
+    while ts < 1000000000000:
+        ts = ts * 10
+    ts = int(ts)
+    return ts
+
+#Encryption Algorithm Used By QQ
+def gethash(selfuin, ptwebqq):
+    selfuin += ""
+    N=[0,0,0,0]
+    for T in range(len(ptwebqq)):
+        N[T%4]=N[T%4]^ord(ptwebqq[T])
+    U=["EC","OK"]
+    V=[0, 0, 0, 0]
+    V[0]=int(selfuin) >> 24 & 255 ^ ord(U[0][0])
+    V[1]=int(selfuin) >> 16 & 255 ^ ord(U[0][1])
+    V[2]=int(selfuin) >>  8 & 255 ^ ord(U[1][0])
+    V[3]=int(selfuin)       & 255 ^ ord(U[1][1])
+    U=[0,0,0,0,0,0,0,0]
+    U[0]=N[0]
+    U[1]=V[0]
+    U[2]=N[1]
+    U[3]=V[1]
+    U[4]=N[2]
+    U[5]=V[2]
+    U[6]=N[3]
+    U[7]=V[3]  
+    N=["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"]
+    V=""
+    for T in range(len(U)):
+        V+= N[ U[T]>>4 & 15]
+        V+= N[ U[T]    & 15]
+    return V
+
 
 def getReValue(html, rex, er, ex):
     v = re.search(rex, html)
@@ -119,7 +154,6 @@ def uin_to_account(tuin):
     logging.info("Now FriendList:" + str(FriendList))
     return FriendList[tuin]
 
-
 def msg_handler(msgObj):
     for msg in msgObj:
         msgType = msg['poll_type']
@@ -128,7 +162,7 @@ def msg_handler(msgObj):
         if msgType == 'message' or msgType == 'sess_message':  # 私聊 or 临时对话
             txt = combine_msg(msg['value']['content'])
             tuin = msg['value']['from_uin']
-            msg_id = msg['value']['msg_id2']
+            msg_id = msg['value']['msg_id']
             from_account = uin_to_account(tuin)
 
             # print "{0}:{1}".format(from_account, txt)
@@ -148,7 +182,7 @@ def msg_handler(msgObj):
                         while ts < 1000000000000:
                             ts = ts * 10
                         ts = int(ts)
-                        info = json.loads(HttpClient_Ist.Get('http://d.web2.qq.com/channel/get_c2cmsg_sig2?id={0}&to_uin={1}&clientid={2}&psessionid={3}&service_type={4}&t={5}'.format(myid, tuin, ClientID, PSessionID, service_type, ts), Referer))
+                        info = json.loads(HttpClient_Ist.Get('http://d1.web2.qq.com/channel/get_c2cmsg_sig2?id={0}&to_uin={1}&clientid={2}&psessionid={3}&service_type={4}&t={5}'.format(myid, tuin, ClientID, PSessionID, service_type, ts), Referer))
                         logging.info("Get group sig:" + str(info))
                         if info['retcode'] != 0:
                             raise ValueError, info
@@ -169,24 +203,23 @@ def msg_handler(msgObj):
             #         msgId += 1
 
             # if txt[0:4] == 'exit':
-            #     logging.info(self.Get('http://d.web2.qq.com/channel/logout2?ids=&clientid={0}&psessionid={1}'.format(self.ClientID, self.PSessionID), Referer))
+            #     logging.info(self.Get('http://d1.web2.qq.com/channel/logout2?ids=&clientid={0}&psessionid={1}'.format(self.ClientID, self.PSessionID), Referer))
             #     exit(0)
 
         # 群消息
         if msgType == 'group_message':
-            global GroupList, GroupWatchList
+            global GroupWatchList
             txt = combine_msg(msg['value']['content'])
             guin = msg['value']['from_uin']
-            gid = msg['value']['info_seq']
+            gid = msg['value']['group_code']
             tuin = msg['value']['send_uin']
-            seq = msg['value']['seq']
-            GroupList[guin] = gid
+            seq = msg['value']['msg_id']
             if str(gid) in GroupWatchList:
                 g_exist = group_thread_exist(gid)
                 if g_exist:
                     g_exist.handle(tuin, txt, seq)
                 else:
-                    tmpThread = group_thread(guin)
+                    tmpThread = group_thread(guin, gid)
                     tmpThread.start()
                     GroupThreadList.append(tmpThread)
                     tmpThread.handle(tuin, txt, seq)
@@ -219,20 +252,20 @@ def combine_msg(content):
 
 def send_msg(tuin, content, isSess, group_sig, service_type):
     if isSess == 0:
-        reqURL = "http://d.web2.qq.com/channel/send_buddy_msg2"
+        reqURL = "http://d1.web2.qq.com/channel/send_buddy_msg2"
         data = (
-            ('r', '{{"to":{0}, "face":594, "content":"[\\"{4}\\", [\\"font\\", {{\\"name\\":\\"Arial\\", \\"size\\":\\"10\\", \\"style\\":[0, 0, 0], \\"color\\":\\"000000\\"}}]]", "clientid":"{1}", "msg_id":{2}, "psessionid":"{3}"}}'.format(tuin, ClientID, msgId, PSessionID, str(content.replace("\\", "\\\\\\\\").replace("\n", "\\\\n").replace("\t", "\\\\t")).decode("utf-8"))),
+            ('r', '{{"to":{0}, "face":594, "content":"[\\"{4}\\", [\\"font\\", {{\\"name\\":\\"Arial\\", \\"size\\":\\"10\\", \\"style\\":[0, 0, 0], \\"color\\":\\"000000\\"}}]]", "clientid":{1}, "msg_id":{2}, "psessionid":"{3}"}}'.format(tuin, ClientID, msgId, PSessionID, str(content.replace("\\", "\\\\\\\\").replace("\n", "\\\\n").replace("\t", "\\\\t")).decode("utf-8"))),
             ('clientid', ClientID),
             ('psessionid', PSessionID)
         )
         rsp = HttpClient_Ist.Post(reqURL, data, Referer)
         rspp = json.loads(rsp)
-        if rspp['retcode']!= 0:
-            logging.error("reply pmchat error"+str(rspp['retcode']))
+        if rspp['errCode']!= 0:
+            logging.error("reply pmchat error"+str(rspp['errCode']))
     else:
-        reqURL = "http://d.web2.qq.com/channel/send_sess_msg2"
+        reqURL = "http://d1.web2.qq.com/channel/send_sess_msg2"
         data = (
-            ('r', '{{"to":{0}, "face":594, "content":"[\\"{4}\\", [\\"font\\", {{\\"name\\":\\"Arial\\", \\"size\\":\\"10\\", \\"style\\":[0, 0, 0], \\"color\\":\\"000000\\"}}]]", "clientid":"{1}", "msg_id":{2}, "psessionid":"{3}", "group_sig":"{5}", "service_type":{6}}}'.format(tuin, ClientID, msgId, PSessionID, str(content.replace("\\", "\\\\\\\\").replace("\n", "\\\\n").replace("\t", "\\\\t")).decode("utf-8"), group_sig, service_type)),
+            ('r', '{{"to":{0}, "face":594, "content":"[\\"{4}\\", [\\"font\\", {{\\"name\\":\\"Arial\\", \\"size\\":\\"10\\", \\"style\\":[0, 0, 0], \\"color\\":\\"000000\\"}}]]", "clientid":{1}, "msg_id":{2}, "psessionid":"{3}", "group_sig":"{5}", "service_type":{6}}}'.format(tuin, ClientID, msgId, PSessionID, str(content.replace("\\", "\\\\\\\\").replace("\n", "\\\\n").replace("\t", "\\\\t")).decode("utf-8"), group_sig, service_type)),
             ('clientid', ClientID),
             ('psessionid', PSessionID),
             ('group_sig', group_sig),
@@ -240,8 +273,8 @@ def send_msg(tuin, content, isSess, group_sig, service_type):
         )
         rsp = HttpClient_Ist.Post(reqURL, data, Referer)
         rspp = json.loads(rsp)
-        if rspp['retcode']!= 0:
-            logging.error("reply temp pmchat error"+str(rspp['retcode']))
+        if rspp['errCode']!= 0:
+            logging.error("reply temp pmchat error"+str(rspp['errCode']))
 
     return rsp
 
@@ -287,15 +320,15 @@ class Login(HttpClient):
         html = self.Get(self.initUrl + '0')
 
         logging.critical("正在获取appid")
-        APPID = getReValue(html, r'g_appid\s*=\s*encodeURIComponent\s*\("(\d+)"', 'Get AppId Error', 1)
+        APPID = getReValue(html, r'<input type="hidden" name="aid" value="(\d+)" />', 'Get AppId Error', 1)
         logging.critical("正在获取login_sig")
-        sign = getReValue(html, r'g_login_sig\s*=\s*encodeURIComponent\s*\("(.+?)"\)', 'Get Login Sign Error', 0)
+        sign = getReValue(html, r'g_login_sig\s*=\s*encodeURIComponent\s*\("(.*?)"\)', 'Get Login Sign Error', 0)
         logging.info('get sign : %s', sign)
         logging.critical("正在获取pt_version")
         JsVer = getReValue(html, r'g_pt_version\s*=\s*encodeURIComponent\s*\("(\d+)"\)', 'Get g_pt_version Error', 1)
         logging.info('get g_pt_version : %s', JsVer)
         logging.critical("正在获取mibao_css")
-        MiBaoCss = getReValue(html, r'g_mibao_css\s*=\s*encodeURIComponent\s*\("(.+?)"\)', 'Get g_mibao_css Error', 1)
+        MiBaoCss = getReValue(html, r'g_mibao_css\s*=\s*encodeURIComponent\s*\("(.*?)"\)', 'Get g_mibao_css Error', 1)
         logging.info('get g_mibao_css : %s', sign)
         StarTime = date_to_millis(datetime.datetime.utcnow())
 
@@ -305,7 +338,6 @@ class Login(HttpClient):
             self.Download('https://ssl.ptlogin2.qq.com/ptqrshow?appid={0}&e=0&l=L&s=8&d=72&v=4'.format(APPID), self.VPath)
             
             logging.info('[{0}] Get QRCode Picture Success.'.format(T))
-            logging.info('请用手机QQ/安全中心扫描二维码登陆')
             
 
             while True:
@@ -342,31 +374,41 @@ class Login(HttpClient):
 
         logging.info('PTWebQQ: {0}'.format(PTWebQQ))
 
-        LoginError = 1
+        LoginError = 3
         while LoginError > 0:
             try:
-                html = self.Post('http://d.web2.qq.com/channel/login2', {
+                html = self.Post('http://d1.web2.qq.com/channel/login2', {
                     'r': '{{"ptwebqq":"{0}","clientid":{1},"psessionid":"{2}","status":"online"}}'.format(PTWebQQ, ClientID, PSessionID)
                 }, Referer)
                 ret = json.loads(html)
-                LoginError = 0
+                html2 = self.Get("http://s.web2.qq.com/api/getvfwebqq?ptwebqq={0}&clientid={1}&psessionid={2}&t={3}".format(PTWebQQ, ClientID, PSessionID, get_ts()), 'http://s.web2.qq.com/proxy.html?v=20130916001&callback=1&id=1')
+                logging.info("getvfwebqq html:  " + str(html2))
+                ret2 = json.loads(html2)
+                LoginError = 0				
             except:
-                LoginError += 1
+                LoginError -= 1
                 logging.critical("登录失败，正在重试")
 
-        if ret['retcode'] != 0:
+        if ret['retcode'] != 0 or ret2['retcode'] != 0:
             raise ValueError, "Login Retcode="+str(ret['retcode'])
             return
 
-        VFWebQQ = ret['result']['vfwebqq']
+        VFWebQQ = ret2['result']['vfwebqq']
         PSessionID = ret['result']['psessionid']
-
+        MyUIN = ret['result']['uin']
         logging.critical("QQ号：{0} 登陆成功, 用户名：{1}".format(ret['result']['uin'], tmpUserName))
         logging.info('Login success')
         logging.critical("登陆二维码用时" + pass_time() + "秒")
 
         msgId = int(random.uniform(20000, 50000))
-
+        html = self.Post('http://s.web2.qq.com/api/get_group_name_list_mask2', {
+                'r': '{{"vfwebqq":"{0}","hash":"{1}"}}'.format(str(VFWebQQ),gethash(str(MyUIN),str(PTWebQQ)))
+            }, 'http://s.web2.qq.com/proxy.html?v=20130916001&callback=1&id=1')
+        ret = json.loads(html)
+        if ret['retcode']!= 0:
+            raise ValueError, "retcode error when getting group list: retcode="+ret['retcode']
+        for t in ret['result']['gnamelist']:
+            GroupNameList[str(t["name"])]=t["gid"]
 
 class check_msg(threading.Thread):
     # try:
@@ -426,7 +468,8 @@ class check_msg(threading.Thread):
 
             if ret['retcode'] == 0:
                 # 信息分发
-                msg_handler(ret['result'])
+                if 'result' in ret:
+                    msg_handler(ret['result'])
                 E = 0
                 continue
 
@@ -435,7 +478,7 @@ class check_msg(threading.Thread):
     # 向服务器查询新消息
     def check(self):
 
-        html = HttpClient_Ist.Post('http://d.web2.qq.com/channel/poll2', {
+        html = HttpClient_Ist.Post('http://d1.web2.qq.com/channel/poll2', {
             'r': '{{"ptwebqq":"{1}","clientid":{2},"psessionid":"{0}","key":""}}'.format(PSessionID, PTWebQQ, ClientID)
         }, Referer)
         logging.info("Check html: " + str(html))
@@ -519,10 +562,10 @@ class group_thread(threading.Thread):
     # 属性
     repeatPicture = False
 
-    def __init__(self, guin):
+    def __init__(self, guin, gcode):
         threading.Thread.__init__(self)
         self.guin = guin
-        self.gid = GroupList[guin]
+        self.gid = gcode
         self.load()
         self.lastreplytime=0
 
@@ -552,9 +595,9 @@ class group_thread(threading.Thread):
             logging.info("REPLY TOO FAST, ABANDON："+content)
             return False
         self.lastreplytime = time.time()
-        reqURL = "http://d.web2.qq.com/channel/send_qun_msg2"
+        reqURL = "http://d1.web2.qq.com/channel/send_qun_msg2"
         data = (
-            ('r', '{{"group_uin":{0}, "face":564,"content":"[\\"{4}\\",[\\"font\\",{{\\"name\\":\\"Arial\\",\\"size\\":\\"10\\",\\"style\\":[0,0,0],\\"color\\":\\"000000\\"}}]]","clientid":"{1}","msg_id":{2},"psessionid":"{3}"}}'.format(self.guin, ClientID, msgId, PSessionID, str(content.replace("\\", "\\\\\\\\").replace("\n", "\\\\n").replace("\t", "\\\\t")).decode("utf-8"))),
+            ('r', '{{"group_uin":{0}, "face":564,"content":"[\\"{4}\\",[\\"font\\",{{\\"name\\":\\"Arial\\",\\"size\\":\\"10\\",\\"style\\":[0,0,0],\\"color\\":\\"000000\\"}}]]","clientid":{1},"msg_id":{2},"psessionid":"{3}"}}'.format(self.guin, ClientID, msgId, PSessionID, str(content.replace("\\", "\\\\\\\\").replace("\n", "\\\\n").replace("\t", "\\\\t")).decode("utf-8"))),
             ('clientid', ClientID),
             ('psessionid', PSessionID)
         )
@@ -562,7 +605,7 @@ class group_thread(threading.Thread):
         rsp = HttpClient_Ist.Post(reqURL, data, Referer)
         try:
             rspp = json.loads(rsp)
-            if rspp['retcode'] == 0:         
+            if rspp['errCode'] == 0:         
                 logging.info("[Reply to group " + str(self.gid) + "]:" + str(content))
                 return True
         except:
@@ -739,8 +782,12 @@ if __name__ == "__main__":
     try:        
         with open('groupfollow.txt','r') as f:
             for line in f:
-                GroupWatchList += line.strip('\n').split(',')
-            logging.info("关注:"+str(GroupWatchList))
+                tmp = line.strip('\n').strip('\r')
+                if str(tmp) in GroupNameList:
+                    GroupWatchList.append(str(GroupNameList[str(tmp)]))
+                    logging.info("关注:"+str(tmp))
+                else:
+                    logging.error("无法找到群："+str(tmp))
     except Exception, e:
         logging.error("读取组存档出错:"+str(e))
     
