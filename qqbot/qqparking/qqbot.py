@@ -486,9 +486,20 @@ class Login(HttpClient):
     MaxTryTime = 5
 
     def __init__(self, vpath, qq=0):
-        global APPID, AdminQQ, PTWebQQ, VFWebQQ, PSessionID, msgId, MyUIN,MarkNameList,NickNameList,GroupList,DiscussionList,QQUserName
+        global APPID, AdminQQ, PTWebQQ, VFWebQQ, PSessionID, msgId, MyUIN,MarkNameList,NickNameList,GroupList,DiscussionList,QQUserName, welcomeMessage, sendtomail
         self.VPath = vpath  # QRCode保存路径
         AdminQQ = int(qq)
+        
+        f=open('config.txt','rt')
+        sendtomail=f.readline().replace("\n","").replace("\r","")
+        msg=f.readline().replace("\n","").replace("\r","")
+        f.close()
+        if sendtomail=='':
+            raise ValueError, 'MUST INPUT NOTIFICATION MAILBOX! (错误：QQParking必须输入邮箱！程序已退出)'
+        if msg!='':
+            welcomeMessage = msg
+        logging.info("配置： 提醒邮箱："+str(sendtomail)+"；欢迎信息："+str(welcomeMessage))
+
         logging.critical("正在获取登陆页面")
         self.initUrl = getReValue(self.Get(SmartQQUrl), r'\.src = "(.+?)"', 'Get Login Url Error.', 1)
         html = self.Get(self.initUrl + '0')
@@ -512,6 +523,7 @@ class Login(HttpClient):
             self.Download('https://ssl.ptlogin2.qq.com/ptqrshow?appid={0}&e=0&l=L&s=8&d=72&v=4'.format(APPID), self.VPath)
             
             logging.info('[{0}] Get QRCode Picture Success.'.format(T))
+            logging.info('请用手机QQ/安全中心扫描二维码登陆')
             
 
             while True:
@@ -684,10 +696,6 @@ class check_msg(threading.Thread):
 
 class pmchat_thread(threading.Thread):
 
-    
-    # con = threading.Condition()
-    autoreply = '最近需要认真学习，不上QQ,有事请邮件联系。接下来由小黄鸡代我与您聊天！在聊天时输入【record】可以开始给我留言，(英文单词: record），输入此命令并在收到提示后输入留言内容即可.record前面不能有空格（r需为该消息的第一个字符），举例:\nrecord\n\n(系统提示消息)\n\n（留言内容）\n\n(系统提示：留言已记录)'
-    # newIp = ''
 
     def __init__(self, tuin, isSess, group_sig, service_type,ini_txt,ini_msgid,myid):
         threading.Thread.__init__(self)
@@ -704,6 +712,7 @@ class pmchat_thread(threading.Thread):
         self.ini_msgid=ini_msgid
         self.sess_group_id = myid
         self.replystreak = 0
+        self.autoreply = welcomeMessage+'接下来由小黄鸡代我与您聊天！在聊天时输入【record】可以开始给我留言，(英文单词: record），输入此命令并在收到提示后输入留言内容即可.record前面不能有空格（r需为该消息的第一个字符），举例:\nrecord\n\n(系统提示消息)\n\n（留言内容）\n\n(系统提示：留言已记录)'
     def check(self):
         self.lastcheck = time.time()
     def run(self):
