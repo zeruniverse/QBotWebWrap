@@ -76,7 +76,7 @@ def sendfailmail():
     except Exception , e:
         logging.error("发送程序错误邮件失败:"+str(e))
         return False
- 
+
 def pass_time():
     global initTime
     rs = (time.time() - initTime)
@@ -110,7 +110,7 @@ def gethash(selfuin, ptwebqq):
     U[4]=N[2]
     U[5]=V[2]
     U[6]=N[3]
-    U[7]=V[3]  
+    U[7]=V[3]
     N=["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"]
     V=""
     for T in range(len(U)):
@@ -178,7 +178,7 @@ def msg_handler(msgObj):
                     if msgType == 'sess_message':
                         isSess = 1
                         service_type = msg['value']['service_type']
-                        myid = msg['value']['id'] 
+                        myid = msg['value']['id']
                         ts = time.time()
                         while ts < 1000000000000:
                             ts = ts * 10
@@ -306,14 +306,14 @@ class Login(HttpClient):
     MaxTryTime = 5
 
     def __init__(self, vpath, qq=0):
-        global APPID, AdminQQ, PTWebQQ, VFWebQQ, PSessionID, msgId, sendtoflag, sendtomail  
-        
+        global APPID, AdminQQ, PTWebQQ, VFWebQQ, PSessionID, msgId, sendtoflag, sendtomail
+
         f=open('email.txt','rt')
         sendtomail=f.readline().replace("\n","").replace("\r","")
         f.close()
         if sendtomail!='':
             sendtoflag=1
-        
+
         self.VPath = vpath  # QRCode保存路径
         AdminQQ = int(qq)
         logging.critical("正在获取登陆页面")
@@ -337,9 +337,9 @@ class Login(HttpClient):
         while True:
             T = T + 1
             self.Download('https://ssl.ptlogin2.qq.com/ptqrshow?appid={0}&e=0&l=L&s=8&d=72&v=4'.format(APPID), self.VPath)
-            
+
             logging.info('[{0}] Get QRCode Picture Success.'.format(T))
-            
+
 
             while True:
                 html = self.Get('https://ssl.ptlogin2.qq.com/ptqrlogin?webqq_type=10&remember_uin=1&login2qq=1&aid={0}&u1=http%3A%2F%2Fw.qq.com%2Fproxy.html%3Flogin2qq%3D1%26webqq_type%3D10&ptredirect=0&ptlang=2052&daid=164&from_ui=1&pttype=1&dumy=&fp=loginerroralert&action=0-0-{1}&mibao_css={2}&t=undefined&g=1&js_type=0&js_ver={3}&login_sig={4}'.format(APPID, date_to_millis(datetime.datetime.utcnow()) - StarTime, MiBaoCss, JsVer, sign), self.initUrl)
@@ -354,7 +354,6 @@ class Login(HttpClient):
         logging.info(ret)
         if ret[1] != '0':
             raise ValueError, "RetCode = "+ret['retcode']
-            return
         logging.critical("二维码已扫描，正在登陆")
         pass_time()
         # 删除QRCode文件
@@ -385,7 +384,7 @@ class Login(HttpClient):
                 html2 = self.Get("http://s.web2.qq.com/api/getvfwebqq?ptwebqq={0}&clientid={1}&psessionid={2}&t={3}".format(PTWebQQ, ClientID, PSessionID, get_ts()), 'http://s.web2.qq.com/proxy.html?v=20130916001&callback=1&id=1')
                 logging.info("getvfwebqq html:  " + str(html2))
                 ret2 = json.loads(html2)
-                LoginError = 0				
+                LoginError = 0
             except:
                 LoginError -= 1
                 logging.critical("登录失败，正在重试")
@@ -473,7 +472,7 @@ class check_msg(threading.Thread):
                     msg_handler(ret['result'])
                 E = 0
                 continue
-            
+
             #Exit on abnormal retcode
             E += 1
 
@@ -498,7 +497,7 @@ class check_msg(threading.Thread):
 
 class pmchat_thread(threading.Thread):
 
-    
+
     # con = threading.Condition()
     # newIp = ''
 
@@ -554,7 +553,7 @@ class pmchat_thread(threading.Thread):
         except Exception, e:
             logging.error("ERROR:"+str(e))
         return False
-        
+
 
 
 class group_thread(threading.Thread):
@@ -609,7 +608,7 @@ class group_thread(threading.Thread):
         rsp = HttpClient_Ist.Post(reqURL, data, Referer)
         try:
             rspp = json.loads(rsp)
-            if rspp['errCode'] == 0:         
+            if rspp['errCode'] == 0:
                 logging.info("[Reply to group " + str(self.gid) + "]:" + str(content))
                 return True
         except:
@@ -648,7 +647,7 @@ class group_thread(threading.Thread):
                     return
                 if self.repeat(content):
                     return
-                
+
         else:
             logging.warning("message seq repeat detected.")
         self.lastseq = seq
@@ -669,7 +668,7 @@ class group_thread(threading.Thread):
                 logging.info("已复读：{" + str(content) + "}")
                 return True
         self.last1 = content
-        
+
         return False
 
     def follow(self, send_uin, content):
@@ -711,16 +710,16 @@ class group_thread(threading.Thread):
                 savefile.close()
         except Exception, e:
             logging.info("读取存档出错:"+str(e))
-    
+
     def callout(self, send_uin, content):
-        pattern = re.compile(r'^(?:!|！)(ai) (.+)') 
+        pattern = re.compile(r'^(?:!|！)(ai) (.+)')
         match = pattern.match(content)
         try:
             if match:
                 logging.info("get info from AI: "+str(match.group(2)).decode('UTF-8'))
                 usr = str(uin_to_account(send_uin))
                 paraf={ 'userid' : usr+'g', 'key' : tulingkey, 'info' : str(match.group(2)).decode('UTF-8')}
-                
+
                 info = HttpClient_Ist.Get('http://www.tuling123.com/openapi/api?'+urllib.urlencode(paraf))
                 logging.info("AI REPLY:"+str(info))
                 info = json.loads(info)
@@ -736,9 +735,9 @@ class group_thread(threading.Thread):
         except Exception, e:
             logging.error("ERROR"+str(e))
         return False
-        
+
     def aboutme(self, content):
-        pattern = re.compile(r'^(?:!|！)(about)') 
+        pattern = re.compile(r'^(?:!|！)(about)')
         match = pattern.match(content)
         try:
             if match:
@@ -749,9 +748,9 @@ class group_thread(threading.Thread):
         except Exception, e:
             logging.error("ERROR"+str(e))
         return False
-        
+
     def deleteall(self, content):
-        pattern = re.compile(r'^(?:!|！)(deleteall)') 
+        pattern = re.compile(r'^(?:!|！)(deleteall)')
         match = pattern.match(content)
         try:
             if match:
@@ -783,7 +782,7 @@ if __name__ == "__main__":
         logging.critical(str(e))
         os._exit(1)
 
-    try:        
+    try:
         with open('groupfollow.txt','r') as f:
             for line in f:
                 tmp = line.strip('\n').strip('\r')
@@ -794,12 +793,12 @@ if __name__ == "__main__":
                     logging.error("无法找到群："+str(tmp))
     except Exception, e:
         logging.error("读取组存档出错:"+str(e))
-    
+
     try:
         t_check = check_msg()
         t_check.setDaemon(True)
-        t_check.start() 
-        t_check.join()    
+        t_check.start()
+        t_check.join()
     except:
         pass
     if sendtoflag!=0:
@@ -808,5 +807,5 @@ if __name__ == "__main__":
         while errortime<5:
             errortime=errortime+1
             if sendfailmail():
-                break           
+                break
 

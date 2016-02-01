@@ -4,57 +4,42 @@ function randomstr(){
     $code = '';
     for($i=1;$i<=6;$i++)
 	{
-		$c=rand(0,25);
-		$code=$code.chr($c+ord("A"));
+		$randchar=rand(0,25);
+		$code=$code.chr($randchar+ord("A"));
 	}
     return $code;
 }
 
 function deldir($dir){
-  $dh=opendir($dir);
-
-  while ($file=readdir($dh)) {
-
+  $mydir=opendir($dir);
+  while ($file=readdir($mydir)) {
     if($file!="." && $file!="..") {
-
       $fullpath=$dir."/".$file;
-
       if(!is_dir($fullpath)) {
-
           unlink($fullpath);
-
       } else {
-
           deldir($fullpath);
-
       }
-
     }
-
   }
 
- 
-
-  closedir($dh);
+  closedir($mydir);
 
   if(rmdir($dir)) {
-
     return true;
-
-  } else {
-
-    return false;
-
   }
+  
+  return false;
 
 }
 
 function pstatus($pid){
     $command = 'ps -p '.$pid;
-    exec($command,$op);
-    if (!isset($op[1])) return false;
+    exec($command,$returnval);
+    if (!isset($returnval[1])) return false;
     else return true;
 }
+
 function dcopy($source, $destination){   
 	if (!is_dir($source)){
 		echo "ERROR: THE".$source." is not a directory!";

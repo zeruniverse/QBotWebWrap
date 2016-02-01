@@ -1,7 +1,7 @@
 QQ机器人WEB控制台
 =========  
 [![Build Status](https://travis-ci.org/zeruniverse/QBotWebWrap.svg)](https://travis-ci.org/zeruniverse/QBotWebWrap)
-[![Code Health](https://landscape.io/github/zeruniverse/QBotWebWrap/master/landscape.svg?style=flat)](https://landscape.io/github/zeruniverse/QBotWebWrap/master)
+[![Codacy Badge](https://api.codacy.com/project/badge/grade/ad8d129910134c2aa5591a99587aeb7c)](https://www.codacy.com/app/zzy8200/QBotWebWrap)
 ![Environment](https://img.shields.io/badge/PHP-5.2+-blue.svg)
 ![Environment](https://img.shields.io/badge/python-2.6, 2.7-blue.svg)
 ![Environment](https://img.shields.io/badge/MySQL-required-ff69b4.svg)

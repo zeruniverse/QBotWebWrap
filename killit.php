@@ -1,8 +1,8 @@
 <?php
 function pstatus($pid){
     $command = 'ps -p '.$pid;
-    exec($command,$op);
-    if (!isset($op[1])) return false;
+    exec($command,$returnval);
+    if (!isset($returnval[1])) return false;
     else return true;
 }
 require_once('function/sqllink.php');

@@ -86,7 +86,7 @@ def gethash(selfuin, ptwebqq):
     U[4]=N[2]
     U[5]=V[2]
     U[6]=N[3]
-    U[7]=V[3]  
+    U[7]=V[3]
     N=["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"]
     V=""
     for T in range(len(U)):
@@ -174,7 +174,7 @@ def msg_handler(msgObj):
             from_account = uin_to_account(tuin)
 
             # print "{0}:{1}".format(from_account, txt)
-            thread_cleanup()    
+            thread_cleanup()
             targetThread = thread_exist(from_account)
             if targetThread:
                 targetThread.push(txt, msg_id)
@@ -187,7 +187,7 @@ def msg_handler(msgObj):
                     if msgType == 'sess_message':
                         isSess = 1
                         service_type = msg['value']['service_type']
-                        myid = msg['value']['id'] 
+                        myid = msg['value']['id']
                         ts = time.time()
                         while ts < 1000000000000:
                             ts = ts * 10
@@ -292,7 +292,7 @@ def thread_cleanup():
     return True
 
 class send_mail(threading.Thread):
-    
+
     def __init__(self, qqnum, uin, content):
         threading.Thread.__init__(self)
         self.qqnum = qqnum
@@ -339,7 +339,7 @@ class send_mail(threading.Thread):
             msg['To'] = ', '.join(TO)
             msg.add_header('reply-to', str(self.qqnum)+'@qq.com')
             part = MIMEText(self.content, 'plain', 'utf-8')
-            msg.attach(part)        
+            msg.attach(part)
             server = smtplib.SMTP(mailserver, 25)
             server.login(mailuser, mailpass)
             server.login(mailuser, mailpass)
@@ -355,9 +355,9 @@ class send_mail(threading.Thread):
         if targetThread:
             targetThread.reply("抱歉，留言发送失败，留言内容为:\n"+str(self.content))
         return True
-        
+
 class send_sess_mail(threading.Thread):
-    
+
     def __init__(self, qqnum, uin, content, sess_group_id, service_type):
         threading.Thread.__init__(self)
         self.qqnum = qqnum
@@ -393,7 +393,7 @@ class send_sess_mail(threading.Thread):
             msg['To'] = ', '.join(TO)
             msg.add_header('reply-to', str(self.qqnum)+'@qq.com')
             part = MIMEText(self.content, 'plain', 'utf-8')
-            msg.attach(part)        
+            msg.attach(part)
             server = smtplib.SMTP(mailserver, 25)
             server.login(mailuser, mailpass)
             server.login(mailuser, mailpass)
@@ -416,7 +416,7 @@ class send_sess_mail(threading.Thread):
                     break
             if flag==0:
                 raise ValueError, "Unable to find corresponding group"
-            
+
             ts = time.time()
             while ts < 1000000000000:
                 ts = ts * 10
@@ -451,7 +451,7 @@ class send_sess_mail(threading.Thread):
                     break
             if flag==0:
                 raise ValueError, "Unable to find corresponding discussion group"
-            
+
             ts = time.time()
             while ts < 1000000000000:
                 ts = ts * 10
@@ -470,7 +470,7 @@ class send_sess_mail(threading.Thread):
                 raise ValueError, "Unable to find nick name in sess from_discussion_group"
             subinfo="昵称："+str(hisnick)
             return (subinfo,self.sess_group_id,group_name)
-            
+
     def failmsg(self):
         targetThread = thread_exist(int(self.qqnum))
         logging.info("邮件发送失败提示，push进线程："+str(targetThread))
@@ -489,7 +489,7 @@ class Login(HttpClient):
         global APPID, AdminQQ, PTWebQQ, VFWebQQ, PSessionID, msgId, MyUIN,MarkNameList,NickNameList,GroupList,DiscussionList,QQUserName, welcomeMessage, sendtomail
         self.VPath = vpath  # QRCode保存路径
         AdminQQ = int(qq)
-        
+
         f=open('config.txt','rt')
         sendtomail=f.readline().replace("\n","").replace("\r","")
         msg=f.readline().replace("\n","").replace("\r","")
@@ -521,10 +521,10 @@ class Login(HttpClient):
         while True:
             T = T + 1
             self.Download('https://ssl.ptlogin2.qq.com/ptqrshow?appid={0}&e=0&l=L&s=8&d=72&v=4'.format(APPID), self.VPath)
-            
+
             logging.info('[{0}] Get QRCode Picture Success.'.format(T))
             logging.info('请用手机QQ/安全中心扫描二维码登陆')
-            
+
 
             while True:
                 html = self.Get('https://ssl.ptlogin2.qq.com/ptqrlogin?webqq_type=10&remember_uin=1&login2qq=1&aid={0}&u1=http%3A%2F%2Fw.qq.com%2Fproxy.html%3Flogin2qq%3D1%26webqq_type%3D10&ptredirect=0&ptlang=2052&daid=164&from_ui=1&pttype=1&dumy=&fp=loginerroralert&action=0-0-{1}&mibao_css={2}&t=undefined&g=1&js_type=0&js_ver={3}&login_sig={4}'.format(APPID, date_to_millis(datetime.datetime.utcnow()) - StarTime, MiBaoCss, JsVer, sign), self.initUrl)
@@ -539,7 +539,6 @@ class Login(HttpClient):
         logging.info(ret)
         if ret[1] != '0':
             raise ValueError, "RetCode = "+ret['retcode']
-            return
         logging.critical("二维码已扫描，正在登陆")
         pass_time()
         # 删除QRCode文件
@@ -577,7 +576,6 @@ class Login(HttpClient):
 
         if ret['retcode'] != 0 or ret2['retcode'] != 0:
             raise ValueError, "RetCode = "+ret['retcode']
-            return
 
         VFWebQQ = ret2['result']['vfwebqq']
         PSessionID = ret['result']['psessionid']
@@ -611,7 +609,7 @@ class Login(HttpClient):
         if ret['retcode']!= 0:
             raise ValueError, "retcode error when getting group list: retcode="+str(ret['retcode'])
         GroupList = ret['result']['gnamelist']
-        
+
 class check_msg(threading.Thread):
     # try:
     #   pass
@@ -674,7 +672,7 @@ class check_msg(threading.Thread):
                     msg_handler(ret['result'])
                 E = 0
                 continue
-            
+
             #Exit on abnormal retcode
             E += 1
 
@@ -741,7 +739,7 @@ class pmchat_thread(threading.Thread):
             logging.error("FAIL TO Reply to " + str(self.tqq) + ":" + str(content))
             return False
     def record_important(self, content):
-        pattern = re.compile(r'^(record)') 
+        pattern = re.compile(r'^(record)')
         match = pattern.match(content)
         try:
             if match:
