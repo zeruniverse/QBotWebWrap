@@ -16,7 +16,7 @@ This project is a Web-based console for [QQRobot](https://github.com/zeruniverse
 Users no longer need to type command in Terminal. They can now do it with a web browser!  
   
 ## 如何使用（服务器端配置）  
-+ 确保安装有PHP 5.2+，MySQL与python2.7  
++ 确保安装有PHP 5.2+，MySQL与Python2.7(需要PyExecJS包)   
 + 新建一个文件夹并将此作为网站根目录，将[QBotWebWrap](https://github.com/zeruniverse/QBotWebWrap/releases/latest)解压至文件夹内。   
 + 新建一个数据库，导入[qwrap.sql](https://raw.githubusercontent.com/zeruniverse/QBotWebWrap/master/qwrap.sql)。    
 + 假设您刚刚建立的文件夹是qwrapweb. `cd qwrapweb`   
