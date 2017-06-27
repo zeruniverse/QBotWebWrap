@@ -198,7 +198,7 @@ def like(unikey,curkey,dataid,time,qztoken):
 # 主函数
 # ----------------- 
 def MsgHandler():
-    html=HttpClient_Ist.Get(Referer,Referer)
+    html=HttpClient_Ist.Get(Referer+'/infocenter?via=toolbar',Referer)
     fkey=re.findall(r'<div class="f-item f-s-i" id=".*?" data-feedsflag=".*?" data-iswupfeed=".*?" data-key="(.*?)" data-specialtype=".*?" data-extend-info=".*?"',html)
     if not fkey:
         raise Exception, 'Fail to find any feeds'
